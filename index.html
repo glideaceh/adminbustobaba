@@ -609,7 +609,8 @@
                 <button class="btn-submit" onclick="processLogin()"><i class="fa-solid fa-right-to-bracket"></i> Masuk Dashboard</button>
             </div>
             <div class="auth-switch">
-                Belum punya akses? <span onclick="toggleAuth('register')">Daftar Baru</span>
+                Belum punya akses?
+                <span onclick="toggleAuth('register')">Daftar Baru</span>
             </div>
         </div>
 
@@ -640,7 +641,7 @@
                 <button class="btn-submit" onclick="processRegister()"><i class="fa-solid fa-user-plus"></i> Buat Akun Admin</button>
             </div>
             <div class="auth-switch">
-                  Sudah punya akun? <span onclick="toggleAuth('login')">Kembali Login</span>
+                Sudah punya akun? <span onclick="toggleAuth('login')">Kembali Login</span>
             </div>
         </div>
     </section>
@@ -675,7 +676,7 @@
         <header id="top-header">
             <div class="header-container">
                 <div class="logo-area">
-                    <div class="mobile-brand" style="display: none; align-items: center; gap: 10px;">
+                     <div class="mobile-brand" style="display: none; align-items: center; gap: 10px;">
                         <img id="mobile-header-logo-img" src="" style="width: 32px; height: 32px; border-radius: 50%; display: none; object-fit: cover;">
                         <i class="fa-solid fa-chart-line-up" id="mobile-header-logo-icon" style="color: var(--primary-dark); font-size: 20px;"></i>
                         <h1 id="mobile-header-company-name" style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif; color: var(--primary-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Go Borneo</h1>
@@ -838,6 +839,14 @@
                                 <p id="preview-fasilitas">0 Fasilitas Terdaftar</p>
                             </div>
                             <div class="setting-card-icon" style="background:rgba(236,72,153,0.1); color:#ec4899;"><i class="fa-solid fa-star"></i></div>
+                        </div>
+
+                        <div class="setting-card-btn" onclick="openSettingModal('paketakses')">
+                            <div class="setting-card-info">
+                                <h4>Paket Akses</h4>
+                                <p id="preview-paketakses">0 Paket Terdaftar</p>
+                            </div>
+                            <div class="setting-card-icon" style="background:rgba(249,115,22,0.1); color:#f97316;"><i class="fa-solid fa-box"></i></div>
                         </div>
 
                         <div class="setting-card-btn mobile-logout-setting" onclick="triggerLogoutWarning()" style="border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.05);">
@@ -1104,7 +1113,6 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: "login", username: user, password: pass })
                 }).then(r => r.json());
-                
                 if(res.status === "success") {
                     localStorage.setItem('goBorneoAdminSession', JSON.stringify(res.user));
                     document.getElementById('view-auth').style.display = 'none';
@@ -1160,7 +1168,6 @@
                 reader.onload = (e) => resolve(e.target.result);
                 reader.readAsDataURL(file);
             });
-            
             try {
                 let res = await fetch(GAS_API_URL, {
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -1256,8 +1263,10 @@
                     renderRequests(result.requests, result.history);
                     updateSettingsPreviews(result.settings);
                 }
-            } catch (error) { console.error(error); } 
-            finally { showLoader("", false); }
+            } catch (error) { console.error(error);
+            } 
+            finally { showLoader("", false);
+            }
         }
 
         function startRealtimePolling() {
@@ -1335,11 +1344,11 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
                         x: { grid: { display: false } }
                     }
                 }
-              });
+               });
         }
 
         function renderRequests(requests, history) {
@@ -1381,7 +1390,7 @@
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Total Bayar:</span><strong style="color:var(--primary-dark);">Rp ${formatNumber(item.totalBayar)}</strong></div>
-                            </div>
+                             </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
                             <div class="action-buttons">
                                 <button class="btn-action btn-reject" onclick="triggerAction('rejectSub', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
@@ -1415,10 +1424,10 @@
                         <div class="request-card">
                             <div class="request-header">
                                 <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
-                                <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
+                                 <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
-                                <div style="display:flex; justify-content:space-between;"><span>Total Bayar:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.totalBayar)}</strong></div>
+                                 <div style="display:flex; justify-content:space-between;"><span>Total Bayar:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.totalBayar)}</strong></div>
                             </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
                         </div>`;
@@ -1445,7 +1454,6 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: actionType, idTarget: rowId })
                 }).then(r => r.json());
-                
                 if(res.status === "success") { showToast("Sinkronisasi berhasil!"); fetchInitialDashboardData(); } 
                 else { showToast("Gagal: " + res.message, true); showLoader("", false); }
             } catch (error) { showToast("Aksi disimulasikan sukses (Offline)."); fetchInitialDashboardData(); }
@@ -1467,13 +1475,14 @@
             document.getElementById('preview-rekening').innerText = `${settings.rekeningList ? settings.rekeningList.length : 0} Rekening Terdaftar`;
             document.getElementById('preview-kendaraan').innerText = `${settings.jenisKendaraanList ? settings.jenisKendaraanList.length : 0} Jenis Terdaftar`;
             document.getElementById('preview-fasilitas').innerText = `${settings.fasilitasList ? settings.fasilitasList.length : 0} Fasilitas Terdaftar`;
+            // MODIFIKASI: Preview Paket Akses
+            document.getElementById('preview-paketakses').innerText = `${settings.paketAksesList ? settings.paketAksesList.length : 0} Paket Terdaftar`;
         }
 
         function openSettingModal(type) {
             const titleEl = document.getElementById('settingModalTitle');
             const bodyEl = document.getElementById('settingModalBody');
             const st = globalRawData.settings || {};
-            
             if(type === 'admin') {
                 const sessionStr = localStorage.getItem('goBorneoAdminSession') || "{}";
                 const usr = JSON.parse(sessionStr);
@@ -1492,7 +1501,7 @@
                     <button class="btn-save-settings" style="background:var(--success);" onclick="saveAdminAccount()"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Akun</button>
                 `;
             } else if(type === 'komisi') {
-                titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
+                 titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Nominal Potongan per Transaksi (Rp)</label>
                     <input type="number" id="mod-komisi" class="form-control" value="${st.komisi || ''}" placeholder="Contoh: 5000">
@@ -1551,7 +1560,7 @@
                         listHtml += `
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
-                                    <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Car'">
+                                     <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Car'">
                                     <span style="font-size:14px; font-weight:700;">${jns.nama}</span>
                                 </div>
                                 <button class="btn-delete-item" onclick="deleteSettingItem('kendaraan', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
@@ -1591,6 +1600,37 @@
                     <input type="text" id="add-fas-nama" class="form-control" placeholder="Nama Fasilitas (Ex: AC, Reclining Seat)">
                     <input type="text" id="add-fas-icon" class="form-control" placeholder="URL Icon Gambar (Tersimpan di Kolom B)">
                     <button class="btn-save-settings" onclick="addSettingItem('fasilitas')" style="background:#ec4899;"><i class="fa-solid fa-plus"></i> Tambah Fasilitas</button>
+                `;
+            }
+            // MODIFIKASI: JENDELA MODAL PAKET AKSES
+            else if(type === 'paketakses') {
+                titleEl.innerHTML = '<i class="fa-solid fa-box" style="color:#f97316;"></i> Kelola Paket Akses';
+                let listHtml = '';
+                if(st.paketAksesList && st.paketAksesList.length > 0) {
+                    st.paketAksesList.forEach((pkt, idx) => {
+                        listHtml += `
+                            <div class="setting-list-item">
+                                <div class="setting-item-content">
+                                    <div style="background:rgba(249,115,22,0.1); color:#f97316; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                        <i class="fa-solid fa-box" style="font-size: 18px;"></i>
+                                    </div>
+                                    <div>
+                                        <strong style="display:block; font-size:14px;">${pkt.nama}</strong>
+                                        <span style="font-size:11px; color:var(--text-muted);">Biaya: Rp ${formatNumber(pkt.harga)}</span>
+                                    </div>
+                                </div>
+                                <button class="btn-delete-item" onclick="deleteSettingItem('paketakses', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
+                            </div>`;
+                    });
+                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data paket akses.</p>'; }
+
+                bodyEl.innerHTML = `
+                    <div style="max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;">${listHtml}</div>
+                    <hr style="border:none; border-top:1px dashed #cbd5e1; margin-bottom:15px;">
+                    <h5 style="font-size:14px; margin-bottom:5px;">Tambah Paket Akses Baru</h5>
+                    <input type="text" id="add-paket-nama" class="form-control" placeholder="Waktu / Nama Paket (Ex: 1 Bulan)">
+                    <input type="number" id="add-paket-harga" class="form-control" placeholder="Biaya (Ex: 50000)">
+                    <button class="btn-save-settings" onclick="addSettingItem('paketakses')" style="background:#f97316;"><i class="fa-solid fa-plus"></i> Tambah Paket</button>
                 `;
             }
 
@@ -1654,7 +1694,8 @@
                     closeSettingModal();
                     fetchInitialDashboardData();
                 } else { showToast("Gagal: " + res.message, true); showLoader("", false); }
-            } catch (e) { showToast("Tersimpan secara lokal (Offline Mode)."); closeSettingModal(); showLoader("", false); }
+            } catch (e) { showToast("Tersimpan secara lokal (Offline Mode).");
+            closeSettingModal(); showLoader("", false); }
         }
 
         async function addSettingItem(category) {
@@ -1675,6 +1716,11 @@
                 payload.icon = document.getElementById('add-fas-icon').value || "";
                 payload.logo = payload.icon; 
                 if(!payload.nama) return showToast("Nama fasilitas wajib diisi!", true);
+            } else if(category === 'paketakses') {
+                // MODIFIKASI: Tambah Data Paket Akses
+                payload.nama = document.getElementById('add-paket-nama').value;
+                payload.harga = document.getElementById('add-paket-harga').value;
+                if(!payload.nama || !payload.harga) return showToast("Waktu paket dan biaya wajib diisi!", true);
             }
 
             showLoader("Menambahkan Data...");
@@ -1688,7 +1734,8 @@
                     closeSettingModal();
                     fetchInitialDashboardData();
                 } else { showToast(res.message, true); showLoader("", false); }
-            } catch(e) { showToast("Ditambahkan dalam mode simulasi."); closeSettingModal(); showLoader("", false); }
+            } catch(e) { showToast("Ditambahkan dalam mode simulasi.");
+            closeSettingModal(); showLoader("", false); }
         }
 
         async function deleteSettingItem(category, index) {
@@ -1699,7 +1746,7 @@
                         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                         body: JSON.stringify({ action: "deleteSettingList", category: category, index: index })
                      }).then(r => r.json());
-                     
+                      
                     if(res.status === "success") {
                         showToast("Data berhasil dihapus!");
                         closeSettingModal();
@@ -1740,7 +1787,8 @@
                 prefiksKode: "GB-", 
                 rekeningList: [{bank:"BCA", norek:"123456", atasNama:"Admin", logo:"https://cdn-icons-png.flaticon.com/512/2830/2830284.png"}], 
                 jenisKendaraanList: [{nama:"Hiace", icon:"https://cdn-icons-png.flaticon.com/512/3097/3097136.png"}], 
-                fasilitasList: [{nama:"AC", icon:"https://cdn-icons-png.flaticon.com/512/900/900833.png"}] 
+                fasilitasList: [{nama:"AC", icon:"https://cdn-icons-png.flaticon.com/512/900/900833.png"}],
+                paketAksesList: [{nama: "1 Bulan", harga: 50000}, {nama: "3 Bulan", harga: 140000}] // Mock data untuk fitur baru
             });
         }
     </script>
