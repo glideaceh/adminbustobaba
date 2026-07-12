@@ -1469,7 +1469,7 @@
         // SETTINGS MODAL MANAGEMENT
         function updateSettingsPreviews(settings) {
             if(!settings) return;
-            document.getElementById('preview-komisi').innerText = `Aktif: Rp ${formatNumber(settings.komisi || 0)}`;
+            document.getElementById('preview-komisi').innerText = `Aktif: ${formatNumber(settings.komisi || 0)} %`;
             document.getElementById('preview-trial').innerText = `Aktif: ${settings.trialDuration || 0} Hari`;
             document.getElementById('preview-prefiks').innerText = `Aktif: ${settings.prefiksKode || '-'}`;
             document.getElementById('preview-rekening').innerText = `${settings.rekeningList ? settings.rekeningList.length : 0} Rekening Terdaftar`;
@@ -1503,7 +1503,7 @@
             } else if(type === 'komisi') {
                  titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
                 bodyEl.innerHTML = `
-                    <label style="font-size:13px; font-weight:600;">Nominal Potongan per Transaksi (Rp)</label>
+                    <label style="font-size:13px; font-weight:600;">Nominal Potongan per Transaksi (%)</label>
                     <input type="number" id="mod-komisi" class="form-control" value="${st.komisi || ''}" placeholder="Contoh: 5000">
                     <button class="btn-save-settings" onclick="saveSingleSetting('komisi')"><i class="fa-solid fa-floppy-disk"></i> Simpan Komisi</button>
                 `;
