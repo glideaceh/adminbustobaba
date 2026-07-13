@@ -219,6 +219,71 @@
             position: relative; overflow: hidden; margin-bottom: 25px;
         }
 
+        /* NEW: Mitra Page Styling */
+        .mitra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .mitra-card {
+            background: var(--bg-glass);
+            backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glass);
+            border-radius: 20px; 
+            padding: 24px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: var(--shadow-glass);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            animation: slideIn 0.4s ease forwards;
+            opacity: 0; /* Starter for animation */
+        }
+        .mitra-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: rgba(255,255,255,0.9);
+            border-color: var(--primary); 
+            box-shadow: 0 15px 35px rgba(2, 132, 199, 0.15);
+        }
+        .mitra-logo-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(135deg, var(--primary), #a855f7);
+            position: relative;
+        }
+        .mitra-logo {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+        }
+        .mitra-card h4 {
+            font-family: 'Poppins', sans-serif;
+            font-size: 17px;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+        .mitra-card .badge {
+            display: inline-block;
+            margin-top: 5px;
+        }
+        
+        .mitra-detail-logo-wrapper {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: -60px auto 15px;
+            border: 4px solid white;
+            box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
+            position: relative;
+            background: white;
+            animation: radar-pulse 2.5s infinite;
+        }
+
         /* Metrics Grid with Auto-Slide & Smooth Carousel */
         .metrics-grid {
             display: flex;
@@ -385,8 +450,10 @@
         .badge-pending { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
         .badge-success { background: #d1fae5; color: #059669; border: 1px solid #a7f3d0; }
         .badge-danger { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
+        .badge-info { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
+        .badge-purple { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+
         .action-buttons { display: flex; gap: 10px; margin-top: auto; }
-        
         .btn-action {
             flex: 1;
             padding: 11px; border: none; border-radius: 12px;
@@ -524,11 +591,29 @@
             animation: slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
+        /* Mitra Detail Modal Form Layout */
+        .mitra-detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            text-align: left;
+            align-items: center;
+        }
+        .mitra-detail-row:last-child { border-bottom: none; }
+        .mitra-detail-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
+        .mitra-detail-value { font-size: 14px; color: var(--text-main); font-weight: 700; text-align: right;}
+
         /* Keyframes */
+        @keyframes radar-pulse {
+            0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(2, 132, 199, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+        }
         @keyframes shiny-sweep { 0% { left: -60%; } 30% { left: 140%; } 100% { left: 140%; } }
         @keyframes spin { to { transform: rotate(360deg); } }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         @keyframes slideInRight { from { transform: translateX(120%); } to { transform: translateX(0); } }
         @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         @keyframes bounceIn { 0% { transform: scale(0); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
@@ -661,6 +746,12 @@
                 <i class="fa-solid fa-paper-plane"></i>
                 <span>Permintaan</span>
             </div>
+            
+            <div class="nav-item" id="nav-mitra" onclick="navigateTo('mitra')">
+                <i class="fa-solid fa-users"></i>
+                <span>Mitra</span>
+            </div>
+
             <div class="nav-item" id="nav-settings" onclick="navigateTo('settings')">
                 <i class="fa-solid fa-gear"></i>
                 <span>Pengaturan</span>
@@ -676,7 +767,7 @@
         <header id="top-header">
             <div class="header-container">
                 <div class="logo-area">
-                     <div class="mobile-brand" style="display: none; align-items: center; gap: 10px;">
+                    <div class="mobile-brand" style="display: none; align-items: center; gap: 10px;">
                         <img id="mobile-header-logo-img" src="" style="width: 32px; height: 32px; border-radius: 50%; display: none; object-fit: cover;">
                         <i class="fa-solid fa-chart-line-up" id="mobile-header-logo-icon" style="color: var(--primary-dark); font-size: 20px;"></i>
                         <h1 id="mobile-header-company-name" style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif; color: var(--primary-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Go Borneo</h1>
@@ -776,6 +867,21 @@
                 </div>
                 <div id="tab-content-hist-sub" class="tab-pane" style="display: none;">
                     <div class="request-grid" id="container-hist-sub"></div>
+                </div>
+            </section>
+
+            <section id="view-mitra" class="page-section">
+                <div class="glass-card" style="padding-bottom: 30px;">
+                    <h2 style="font-family:'Poppins', sans-serif; font-size:20px; margin-bottom:5px;"><i class="fa-solid fa-users"></i> Daftar Mitra Terdaftar</h2>
+                    <p style="font-size:13px; color:var(--text-muted);">Berikut adalah daftar seluruh mitra aplikasi dan skema pembayaran yang digunakan.</p>
+                    
+                    <div class="search-form" style="margin-top: 20px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="mitraSearchInput" placeholder="Cari nama perusahaan mitra..." oninput="filterMitra()">
+                    </div>
+
+                    <div class="mitra-grid" id="container-mitra-list">
+                        </div>
                 </div>
             </section>
 
@@ -900,8 +1006,41 @@
         <div class="modal-content" style="max-width: 480px;">
             <button class="modal-close" onclick="closeSettingModal()">&times;</button>
             <h3 id="settingModalTitle" style="font-family:'Poppins', sans-serif; font-size: 18px; margin-bottom: 15px; text-align:left;">Pengaturan</h3>
-            
             <div id="settingModalBody" style="text-align:left;"></div>
+        </div>
+    </div>
+
+    <div id="mitraDetailModal" class="modal">
+        <div class="modal-content" style="max-width: 420px; padding: 40px 30px;">
+            <button class="modal-close" onclick="closeMitraDetail()">&times;</button>
+            
+            <div class="mitra-detail-logo-wrapper">
+                <img id="dtl-mitra-logo" src="" alt="Logo" style="width:100%; height:100%; border-radius:50%; object-fit:cover;">
+            </div>
+            
+            <h3 id="dtl-mitra-nama" style="font-family:'Poppins', sans-serif; font-size: 20px; color: var(--text-main); margin-bottom: 5px;">Nama PT</h3>
+            <p id="dtl-mitra-skema" class="badge badge-info" style="margin-bottom: 25px; padding: 6px 14px; font-size: 12px;"></p>
+            
+            <div style="background: rgba(15, 23, 42, 0.03); border-radius: 16px; padding: 15px; border: 1px solid rgba(0,0,0,0.04);">
+                <div class="mitra-detail-row">
+                    <span class="mitra-detail-label"><i class="fa-solid fa-user"></i> Nama Pemilik Akun</span>
+                    <span class="mitra-detail-value" id="dtl-mitra-akun"></span>
+                </div>
+                <div class="mitra-detail-row">
+                    <span class="mitra-detail-label"><i class="fa-solid fa-phone"></i> No. Handphone</span>
+                    <span class="mitra-detail-value" id="dtl-mitra-hp"></span>
+                </div>
+                <div class="mitra-detail-row">
+                    <span class="mitra-detail-label"><i class="fa-solid fa-map-location-dot"></i> Alamat</span>
+                    <span class="mitra-detail-value" id="dtl-mitra-alamat" style="max-width: 50%; text-align: right; line-height: 1.4;"></span>
+                </div>
+                <div class="mitra-detail-row">
+                    <span class="mitra-detail-label"><i class="fa-solid fa-wallet"></i> Saldo Dompet</span>
+                    <span class="mitra-detail-value" id="dtl-mitra-saldo" style="color: var(--success);"></span>
+                </div>
+            </div>
+
+            <button class="btn-action" style="background: #e2e8f0; color: #475569; width: 100%; margin-top: 25px; box-shadow:none;" onclick="closeMitraDetail()">Tutup Detail</button>
         </div>
     </div>
 
@@ -918,6 +1057,8 @@
         let lastSubCount = 0;
         let actionCallback = null;
         let currentChartFilter = 'hari'; 
+        
+        let globalMitraList = []; // Menyimpan data mitra yang dimuat
 
         window.addEventListener('DOMContentLoaded', () => {
             checkAutoLogin();
@@ -931,11 +1072,9 @@
 
             document.getElementById('display-admin-name').innerText = adminName;
             
-            // Sidebar update
             const sbName = document.getElementById('sidebar-company-name');
             if(sbName) sbName.innerText = compName;
             
-            // Mobile header update
             const mbName = document.getElementById('mobile-header-company-name');
             if(mbName) mbName.innerText = compName;
 
@@ -962,7 +1101,7 @@
                         document.getElementById('view-auth').style.display = 'none';
                         document.getElementById('dashboard-wrapper').style.display = 'block';
                         
-                        updateBranding(user); // Panggil UI dinamis
+                        updateBranding(user); 
                         
                         showLoader("Melanjutkan Sesi Login...");
                         fetchInitialDashboardData();
@@ -1008,7 +1147,6 @@
             setTimeout(() => { toast.style.display = "none"; }, 4000);
         }
 
-        // 1. Password Visibility Toggle
         function togglePasswordVisibility(inputId, iconEl) {
             const input = document.getElementById(inputId);
             if(input.type === "password") {
@@ -1022,7 +1160,6 @@
             }
         }
 
-        // 2. Format Tanggal Indonesia
         function formatTanggalIndo(dateStr) {
             if(!dateStr || dateStr === "") return "-";
             let d = new Date(dateStr);
@@ -1033,7 +1170,6 @@
             return `${d.getDate()} ${bulan[d.getMonth()]} ${d.getFullYear()}, ${jam}.${mnt} WIB`;
         }
 
-        // 3. Auto-Slide Carousel untuk Metrics Grid di Dashboard
         function startMetricsAutoSlide() {
             if (autoSlideInterval) clearInterval(autoSlideInterval);
             const grid = document.getElementById('metricsCarouselGrid');
@@ -1051,7 +1187,6 @@
             grid.addEventListener('touchend', startMetricsAutoSlide);
         }
 
-        // 4. Logout Warning Modal Beranimasi
         function triggerLogoutWarning() {
             document.getElementById('logoutWarningModal').style.display = "flex";
         }
@@ -1071,7 +1206,6 @@
             showToast("Anda telah berhasil keluar dari sistem.");
         }
 
-        // Action Confirmation Modal
         function showConfirmModal(type, msg, callback) {
             const modal = document.getElementById('actionConfirmModal');
             document.getElementById('confirmMessage').innerText = msg;
@@ -1118,7 +1252,7 @@
                     document.getElementById('view-auth').style.display = 'none';
                     document.getElementById('dashboard-wrapper').style.display = 'block';
                     
-                    updateBranding(res.user); // Panggil UI dinamis
+                    updateBranding(res.user);
                     
                     showLoader("Memuat Data Halaman...");
                     await fetchInitialDashboardData();
@@ -1188,7 +1322,6 @@
             }
         }
 
-        // Dashboard Navigation
         function navigateTo(pageId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
@@ -1196,7 +1329,6 @@
             document.getElementById(`view-${pageId}`).classList.add('active');
         }
 
-        // Tab Switcher Permintaan
         function switchRequestTab(tabId, el) {
             document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
             if(el) el.classList.add('active');
@@ -1207,7 +1339,6 @@
             filterRequests();
         }
 
-        // Form Pencarian Permintaan
         function filterRequests() {
             const keyword = document.getElementById('reqSearchInput').value.toLowerCase();
             const activePane = document.querySelector('.tab-pane[style*="block"]') || document.getElementById('tab-content-topup');
@@ -1217,8 +1348,18 @@
                 card.style.display = text.includes(keyword) ? "flex" : "none";
             });
         }
+        
+        // Filter Pencarian Mitra
+        function filterMitra() {
+            const keyword = document.getElementById('mitraSearchInput').value.toLowerCase();
+            const container = document.getElementById('container-mitra-list');
+            const cards = container.querySelectorAll('.mitra-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(keyword) ? "block" : "none";
+            });
+        }
 
-        // Handler saat Dropdown Filter Grafik berubah
         async function onChartFilterChange() {
             currentChartFilter = document.getElementById('chartFilter').value;
             showLoader("Memperbarui Grafik...", true);
@@ -1247,7 +1388,6 @@
             }
         }
 
-        // Data Fetching & UI Rendering
         async function fetchInitialDashboardData() {
             try {
                 let response = await fetch(GAS_API_URL, {
@@ -1262,6 +1402,12 @@
                     renderCharts(result.chartData);
                     renderRequests(result.requests, result.history);
                     updateSettingsPreviews(result.settings);
+                    
+                    // Render list Mitra
+                    if (result.mitraList) {
+                        globalMitraList = result.mitraList;
+                        renderMitraList();
+                    }
                 }
             } catch (error) { console.error(error);
             } 
@@ -1291,6 +1437,12 @@
                         renderCharts(result.chartData); 
                         renderRequests(result.requests, result.history);
                         updateSettingsPreviews(result.settings);
+                        
+                        // Update list Mitra Real-time
+                        if (result.mitraList) {
+                            globalMitraList = result.mitraList;
+                            renderMitraList();
+                        }
                     }
                 } catch(e) {}
             }, 10000);
@@ -1344,11 +1496,64 @@
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
                         x: { grid: { display: false } }
                     }
                 }
-               });
+            });
+        }
+
+        // TAMBAHAN: Render Mitra List Cards (dengan staggered animation)
+        function renderMitraList() {
+            const container = document.getElementById('container-mitra-list');
+            container.innerHTML = "";
+            
+            if(!globalMitraList || globalMitraList.length === 0) {
+                container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-solid fa-users-slash" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum ada mitra yang terdaftar.</div>`;
+                return;
+            }
+
+            globalMitraList.forEach((mitra, index) => {
+                let logoSrc = mitra.logo || 'https://via.placeholder.com/150?text=Logo';
+                let skemaBadge = mitra.skema.toLowerCase() === 'langganan' ? 'badge-purple' : 'badge-info';
+                
+                // Menambahkan delay animasi untuk staggered effect (0s, 0.1s, 0.2s...)
+                let animDelay = (index * 0.1) + 's';
+                
+                container.innerHTML += `
+                    <div class="mitra-card" onclick="openMitraDetail(${index})" style="animation-delay: ${animDelay};">
+                        <div class="mitra-logo-wrapper">
+                            <img src="${logoSrc}" class="mitra-logo" alt="Logo ${mitra.namaPerusahaan}" onerror="this.src='https://via.placeholder.com/150?text=Logo'">
+                        </div>
+                        <h4>${mitra.namaPerusahaan}</h4>
+                        <span class="badge ${skemaBadge}">${mitra.skema.toUpperCase()}</span>
+                    </div>
+                `;
+            });
+            filterMitra();
+        }
+        
+        // TAMBAHAN: Buka Modal Detail Mitra
+        function openMitraDetail(index) {
+            const mitra = globalMitraList[index];
+            if(!mitra) return;
+            
+            document.getElementById('dtl-mitra-logo').src = mitra.logo || 'https://via.placeholder.com/150?text=Logo';
+            document.getElementById('dtl-mitra-logo').onerror = function() { this.src = 'https://via.placeholder.com/150?text=Logo'; };
+            document.getElementById('dtl-mitra-nama').innerText = mitra.namaPerusahaan;
+            document.getElementById('dtl-mitra-skema').innerText = "Skema " + mitra.skema;
+            
+            // Detail Information Mapping
+            document.getElementById('dtl-mitra-akun').innerText = mitra.username;
+            document.getElementById('dtl-mitra-hp').innerText = mitra.noHp ? mitra.noHp.replace(/'/g, '') : '-';
+            document.getElementById('dtl-mitra-alamat').innerText = mitra.alamat || '-';
+            document.getElementById('dtl-mitra-saldo').innerText = "Rp " + formatNumber(mitra.saldo || 0);
+
+            document.getElementById('mitraDetailModal').style.display = "flex";
+        }
+
+        function closeMitraDetail() {
+            document.getElementById('mitraDetailModal').style.display = "none";
         }
 
         function renderRequests(requests, history) {
@@ -1390,7 +1595,7 @@
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Total Bayar:</span><strong style="color:var(--primary-dark);">Rp ${formatNumber(item.totalBayar)}</strong></div>
-                             </div>
+                            </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
                             <div class="action-buttons">
                                 <button class="btn-action btn-reject" onclick="triggerAction('rejectSub', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
@@ -1424,10 +1629,10 @@
                         <div class="request-card">
                             <div class="request-header">
                                 <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
-                                 <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
+                                <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
-                                 <div style="display:flex; justify-content:space-between;"><span>Total Bayar:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.totalBayar)}</strong></div>
+                                <div style="display:flex; justify-content:space-between;"><span>Total Bayar:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.totalBayar)}</strong></div>
                             </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
                         </div>`;
@@ -1475,7 +1680,6 @@
             document.getElementById('preview-rekening').innerText = `${settings.rekeningList ? settings.rekeningList.length : 0} Rekening Terdaftar`;
             document.getElementById('preview-kendaraan').innerText = `${settings.jenisKendaraanList ? settings.jenisKendaraanList.length : 0} Jenis Terdaftar`;
             document.getElementById('preview-fasilitas').innerText = `${settings.fasilitasList ? settings.fasilitasList.length : 0} Fasilitas Terdaftar`;
-            // MODIFIKASI: Preview Paket Akses
             document.getElementById('preview-paketakses').innerText = `${settings.paketAksesList ? settings.paketAksesList.length : 0} Paket Terdaftar`;
         }
 
@@ -1501,7 +1705,7 @@
                     <button class="btn-save-settings" style="background:var(--success);" onclick="saveAdminAccount()"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Akun</button>
                 `;
             } else if(type === 'komisi') {
-                 titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
+                titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Nominal Potongan per Transaksi (%)</label>
                     <input type="number" id="mod-komisi" class="form-control" value="${st.komisi || ''}" placeholder="Contoh: 5000">
@@ -1560,7 +1764,7 @@
                         listHtml += `
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
-                                     <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Car'">
+                                    <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Car'">
                                     <span style="font-size:14px; font-weight:700;">${jns.nama}</span>
                                 </div>
                                 <button class="btn-delete-item" onclick="deleteSettingItem('kendaraan', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
@@ -1601,9 +1805,7 @@
                     <input type="text" id="add-fas-icon" class="form-control" placeholder="URL Icon Gambar (Tersimpan di Kolom B)">
                     <button class="btn-save-settings" onclick="addSettingItem('fasilitas')" style="background:#ec4899;"><i class="fa-solid fa-plus"></i> Tambah Fasilitas</button>
                 `;
-            }
-            // MODIFIKASI: JENDELA MODAL PAKET AKSES
-            else if(type === 'paketakses') {
+            } else if(type === 'paketakses') {
                 titleEl.innerHTML = '<i class="fa-solid fa-box" style="color:#f97316;"></i> Kelola Paket Akses';
                 let listHtml = '';
                 if(st.paketAksesList && st.paketAksesList.length > 0) {
@@ -1665,7 +1867,7 @@
                     oldSession.noHp = hp;
                     localStorage.setItem('goBorneoAdminSession', JSON.stringify(oldSession));
                     
-                    updateBranding(oldSession); // Panggil UI update
+                    updateBranding(oldSession);
                     closeSettingModal();
                 } else {
                     showToast("Gagal: " + res.message, true);
@@ -1717,7 +1919,6 @@
                 payload.logo = payload.icon; 
                 if(!payload.nama) return showToast("Nama fasilitas wajib diisi!", true);
             } else if(category === 'paketakses') {
-                // MODIFIKASI: Tambah Data Paket Akses
                 payload.nama = document.getElementById('add-paket-nama').value;
                 payload.harga = document.getElementById('add-paket-harga').value;
                 if(!payload.nama || !payload.harga) return showToast("Waktu paket dan biaya wajib diisi!", true);
@@ -1746,7 +1947,7 @@
                         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                         body: JSON.stringify({ action: "deleteSettingList", category: category, index: index })
                      }).then(r => r.json());
-                      
+                       
                     if(res.status === "success") {
                         showToast("Data berhasil dihapus!");
                         closeSettingModal();
@@ -1779,8 +1980,16 @@
                 topup: [{ id: "10", namaPerusahaan: "Kutai Express", tanggal: new Date(Date.now() - 86400000).toISOString(), nominal: 1000000, status: "Selesai", strukUrl: "https://via.placeholder.com/400" }],
                 subscription: [{ id: "11", namaPerusahaan: "Borneo Trans Mandiri", tanggal: new Date(Date.now() - 172800000).toISOString(), totalBayar: 300000, status: "Selesai", strukUrl: "https://via.placeholder.com/400" }]
             };
+            
+            globalMitraList = [
+                { username: "syahrin_admin", namaPerusahaan: "Borneo Trans Mandiri", skema: "Langganan", noHp: "081234567890", alamat: "Jl. Mulawarman No.1, Samarinda", logo: "", saldo: 0 },
+                { username: "kutai_boss", namaPerusahaan: "Kutai Express", skema: "Komisi Pertransaksi", noHp: "085211223344", alamat: "Jl. Sudirman, Balikpapan", logo: "", saldo: 250000 }
+            ];
+
             updateNotificationBadges(mockReq);
             renderRequests(mockReq, mockHist);
+            renderMitraList();
+            
             updateSettingsPreviews({ 
                 komisi: 5000, 
                 trialDuration: 7, 
@@ -1788,7 +1997,7 @@
                 rekeningList: [{bank:"BCA", norek:"123456", atasNama:"Admin", logo:"https://cdn-icons-png.flaticon.com/512/2830/2830284.png"}], 
                 jenisKendaraanList: [{nama:"Hiace", icon:"https://cdn-icons-png.flaticon.com/512/3097/3097136.png"}], 
                 fasilitasList: [{nama:"AC", icon:"https://cdn-icons-png.flaticon.com/512/900/900833.png"}],
-                paketAksesList: [{nama: "1 Bulan", harga: 50000}, {nama: "3 Bulan", harga: 140000}] // Mock data untuk fitur baru
+                paketAksesList: [{nama: "1 Bulan", harga: 50000}, {nama: "3 Bulan", harga: 140000}] 
             });
         }
     </script>
