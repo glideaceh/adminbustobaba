@@ -118,7 +118,8 @@
             color: var(--primary);
             cursor: pointer;
         }
-        .auth-switch span:hover { text-decoration: underline; }
+        .auth-switch span:hover { text-decoration: underline;
+        }
 
         /* Password Toggle Wrapper */
         .password-wrapper {
@@ -135,10 +136,12 @@
             transition: color 0.2s;
             z-index: 10;
         }
-        .password-toggle:hover { color: var(--primary); }
+        .password-toggle:hover { color: var(--primary);
+        }
 
         /* Dashboard Layout */
-        #dashboard-wrapper { display: none; }
+        #dashboard-wrapper { display: none;
+        }
         header {
             background: rgba(255, 255, 255, 0.3);
             backdrop-filter: blur(12px);
@@ -155,8 +158,10 @@
             justify-content: space-between;
             align-items: center;
         }
-        .mobile-brand { display: none; }
-        .desktop-title { display: flex; align-items: center; }
+        .mobile-brand { display: none;
+        }
+        .desktop-title { display: flex; align-items: center;
+        }
         .main-container {
             margin-left: 250px;
             padding: 30px 20px;
@@ -195,7 +200,8 @@
             cursor: pointer;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .nav-item i { font-size: 18px; width: 24px; text-align: center; }
+        .nav-item i { font-size: 18px;
+            width: 24px; text-align: center; }
         .nav-item.active {
             background: var(--primary-dark);
             color: #fff;
@@ -206,8 +212,10 @@
             color: var(--primary);
         }
 
-        .page-section { display: none; animation: fadeIn 0.4s ease forwards; }
-        .page-section.active { display: block; }
+        .page-section { display: none; animation: fadeIn 0.4s ease forwards;
+        }
+        .page-section.active { display: block;
+        }
 
         /* Glass Cards */
         .glass-card {
@@ -237,7 +245,13 @@
             box-shadow: var(--shadow-glass);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             animation: slideIn 0.4s ease forwards;
-            opacity: 0; /* Starter for animation */
+            opacity: 0;
+            /* Starter for animation */
+        }
+        .mitra-card-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
         .mitra-card:hover {
             transform: translateY(-8px) scale(1.02);
@@ -276,7 +290,7 @@
             width: 100px;
             height: 100px;
             border-radius: 50%;
-            margin: -60px auto 15px;
+            margin: -25px auto 15px; /* LOGO TIDAK TERLALU KE ATAS LAGI */
             border: 4px solid white;
             box-shadow: 0 10px 25px rgba(2, 132, 199, 0.2);
             position: relative;
@@ -295,7 +309,8 @@
             padding-bottom: 12px;
             -webkit-overflow-scrolling: touch;
         }
-        .metrics-grid::-webkit-scrollbar { height: 6px; }
+        .metrics-grid::-webkit-scrollbar { height: 6px;
+        }
         .metrics-grid::-webkit-scrollbar-thumb {
             background: rgba(2, 132, 199, 0.2);
             border-radius: 10px;
@@ -350,7 +365,8 @@
             width: 100%;
             scrollbar-width: none;
         }
-        .request-tabs::-webkit-scrollbar { display: none; }
+        .request-tabs::-webkit-scrollbar { display: none;
+        }
         .tab-btn {
             background: rgba(255, 255, 255, 0.85);
             border: 1.5px solid rgba(2, 132, 199, 0.3);
@@ -387,7 +403,8 @@
             box-shadow: 0 6px 18px rgba(2, 132, 199, 0.35);
             transform: translateY(-1px);
         }
-        .tab-btn.active i { color: #ffffff; }
+        .tab-btn.active i { color: #ffffff;
+        }
         
         .notif-badge {
             background: var(--danger);
@@ -397,10 +414,12 @@
             display: none;
             box-shadow: 0 2px 6px rgba(239, 68, 68, 0.4);
         }
-        .notif-badge.show { display: inline-block; animation: pulse 1.5s infinite; }
+        .notif-badge.show { display: inline-block;
+            animation: pulse 1.5s infinite; }
 
         /* Form Pencarian Modern */
-        .search-form { position: relative; width: 100%; }
+        .search-form { position: relative;
+            width: 100%; }
         .search-form input {
             width: 100%;
             padding: 14px 20px 14px 46px;
@@ -427,10 +446,12 @@
             font-size: 16px;
             transition: transform 0.3s ease;
         }
-        .search-form input:focus ~ i { transform: translateY(-50%) scale(1.15); }
+        .search-form input:focus ~ i { transform: translateY(-50%) scale(1.15);
+        }
 
         /* Request Cards */
-        .request-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+        .request-grid { display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
         .request-card {
             border-radius: 20px;
             padding: 20px;
@@ -445,15 +466,25 @@
             transform: translateY(-4px);
             box-shadow: 0 12px 30px rgba(2, 132, 199, 0.12);
         }
-        .request-header { display: flex; justify-content: space-between; align-items: flex-start; }
-        .badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
-        .badge-pending { background: #fef3c7; color: #d97706; border: 1px solid #fde68a; }
-        .badge-success { background: #d1fae5; color: #059669; border: 1px solid #a7f3d0; }
-        .badge-danger { background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; }
-        .badge-info { background: #e0f2fe; color: #0369a1; border: 1px solid #bae6fd; }
-        .badge-purple { background: #f3e8ff; color: #7e22ce; border: 1px solid #e9d5ff; }
+        .request-header { display: flex;
+            justify-content: space-between; align-items: flex-start; }
+        .badge { font-size: 11px; font-weight: 700;
+            padding: 4px 10px; border-radius: 20px; text-transform: uppercase; }
+        .badge-pending { background: #fef3c7;
+            color: #d97706; border: 1px solid #fde68a; }
+        .badge-success { background: #d1fae5; color: #059669;
+            border: 1px solid #a7f3d0; }
+        .badge-danger { background: #fee2e2; color: #dc2626;
+            border: 1px solid #fecaca; }
+        .badge-info { background: #e0f2fe; color: #0369a1;
+            border: 1px solid #bae6fd; }
+        .badge-purple { background: #f3e8ff; color: #7e22ce;
+            border: 1px solid #e9d5ff; }
+        /* Badge Warning Khusus Langganan */
+        .badge-warning { background: #ffedd5; color: #ea580c; border: 1px solid #fdba74; }
 
-        .action-buttons { display: flex; gap: 10px; margin-top: auto; }
+        .action-buttons { display: flex; gap: 10px; margin-top: auto;
+        }
         .btn-action {
             flex: 1;
             padding: 11px; border: none; border-radius: 12px;
@@ -461,9 +492,13 @@
             display: flex; align-items: center; justify-content: center; gap: 6px;
             transition: transform 0.2s, opacity 0.2s, box-shadow 0.2s;
         }
-        .btn-approve { background: var(--success); color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
-        .btn-reject { background: var(--danger); color: white; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25); }
-        .btn-action:hover { opacity: 0.9; transform: translateY(-2px); }
+        .btn-approve { background: var(--success);
+            color: white; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+        }
+        .btn-reject { background: var(--danger); color: white;
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.25); }
+        .btn-action:hover { opacity: 0.9;
+            transform: translateY(-2px); }
 
         /* Form Controls */
         .form-control {
@@ -473,7 +508,8 @@
             font-size: 14px; font-weight: 500; margin-top: 8px;
             transition: all 0.3s;
         }
-        .form-control:focus { border-color: var(--primary); background: white; box-shadow: 0 0 0 3px rgba(2,132,199,0.15); }
+        .form-control:focus { border-color: var(--primary); background: white;
+            box-shadow: 0 0 0 3px rgba(2,132,199,0.15); }
         .btn-save-settings, .btn-submit {
             background: var(--primary-dark);
             color: white; width: 100%;
@@ -481,7 +517,8 @@
             margin-top: 15px; cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
         }
-        .btn-submit:hover, .btn-save-settings:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(3, 105, 161, 0.35); }
+        .btn-submit:hover, .btn-save-settings:hover { transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(3, 105, 161, 0.35); }
 
         /* Redesigned Settings Page */
         .settings-menu-grid {
@@ -503,8 +540,10 @@
             background: rgba(255,255,255,0.9);
             border-color: var(--primary); box-shadow: 0 15px 30px rgba(2, 132, 199, 0.15);
         }
-        .setting-card-info h4 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 4px; }
-        .setting-card-info p { font-size: 12px; color: var(--text-muted); }
+        .setting-card-info h4 { font-size: 16px; font-weight: 700; color: var(--text-main); margin-bottom: 4px;
+        }
+        .setting-card-info p { font-size: 12px; color: var(--text-muted);
+        }
         .setting-card-icon {
             width: 50px;
             height: 50px; border-radius: 14px;
@@ -527,7 +566,8 @@
             transform: translateX(4px);
             border-color: var(--primary);
         }
-        .setting-item-content { display: flex; align-items: center; gap: 12px; }
+        .setting-item-content { display: flex; align-items: center; gap: 12px;
+        }
         .setting-item-img {
             width: 40px;
             height: 40px; border-radius: 10px;
@@ -541,7 +581,8 @@
             display: flex; align-items: center; justify-content: center;
             transition: opacity 0.2s, transform 0.2s;
         }
-        .btn-delete-item:hover { opacity: 0.85; transform: scale(1.05); }
+        .btn-delete-item:hover { opacity: 0.85; transform: scale(1.05);
+        }
 
         /* Modals & Notifications */
         .modal {
@@ -563,7 +604,8 @@
             top: 15px; right: 20px; background: none; border: none;
             font-size: 24px; cursor: pointer; color: var(--text-muted); transition: color 0.2s;
         }
-        .modal-close:hover { color: var(--danger); }
+        .modal-close:hover { color: var(--danger);
+        }
 
         /* Custom Animated Logout Warning Popup */
         .logout-modal-content {
@@ -600,24 +642,41 @@
             text-align: left;
             align-items: center;
         }
-        .mitra-detail-row:last-child { border-bottom: none; }
-        .mitra-detail-label { font-size: 12px; color: var(--text-muted); font-weight: 600; }
-        .mitra-detail-value { font-size: 14px; color: var(--text-main); font-weight: 700; text-align: right;}
+        .mitra-detail-row:last-child { border-bottom: none;
+        }
+        .mitra-detail-label { font-size: 12px; color: var(--text-muted); font-weight: 600;
+        }
+        .mitra-detail-value { font-size: 14px; color: var(--text-main); font-weight: 700;
+            text-align: right;}
 
         /* Keyframes */
         @keyframes radar-pulse {
-            0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4); }
-            70% { box-shadow: 0 0 0 15px rgba(2, 132, 199, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0); }
+            0% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0.4);
+            }
+            70% { box-shadow: 0 0 0 15px rgba(2, 132, 199, 0);
+            }
+            100% { box-shadow: 0 0 0 0 rgba(2, 132, 199, 0);
+            }
         }
-        @keyframes shiny-sweep { 0% { left: -60%; } 30% { left: 140%; } 100% { left: 140%; } }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes slideIn { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes slideInRight { from { transform: translateX(120%); } to { transform: translateX(0); } }
-        @keyframes scaleUp { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        @keyframes bounceIn { 0% { transform: scale(0); } 60% { transform: scale(1.15); } 100% { transform: scale(1); } }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.15); } 100% { transform: scale(1); } }
+        @keyframes shiny-sweep { 0% { left: -60%;
+            } 30% { left: 140%; } 100% { left: 140%;
+            } }
+        @keyframes spin { to { transform: rotate(360deg);
+            } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px);
+            } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { transform: translateY(30px);
+            opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes slideInRight { from { transform: translateX(120%);
+            } to { transform: translateX(0); } }
+        @keyframes scaleUp { from { transform: scale(0.9);
+            opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes bounceIn { 0% { transform: scale(0);
+            } 60% { transform: scale(1.15); } 100% { transform: scale(1);
+            } }
+        @keyframes pulse { 0% { transform: scale(1);
+            } 50% { transform: scale(1.15); } 100% { transform: scale(1);
+            } }
 
         /* Responsive Breakpoint (Mobile Mode) */
         @media (max-width: 768px) {
@@ -629,10 +688,13 @@
                 padding: 10px;
                 border-radius: 30px 30px 0 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
             }
-            .sidebar-logo { display: none; }
-            .sidebar .nav-logout-desktop { display: none !important; }
+            .sidebar-logo { display: none;
+            }
+            .sidebar .nav-logout-desktop { display: none !important;
+            }
             
-            body { padding-bottom: 90px; }
+            body { padding-bottom: 90px;
+            }
             
             /* Mobile Top Navbar Override */
             header { 
@@ -656,15 +718,46 @@
                 gap: 4px; padding: 8px 15px; font-size: 11px;
                 border-radius: 20px;
             }
-            .nav-item i { font-size: 20px; }
-            .nav-item span { display: block; }
+            .nav-item i { font-size: 20px;
+            }
+            .nav-item span { display: block;
+            }
             
-            .sticky-req-header { top: 75px !important; }
-            .mobile-brand { display: flex !important; }
-            .desktop-title { display: none !important; }
-            .mobile-logout-setting { display: flex !important; }
+            .sticky-req-header { top: 75px !important;
+            }
+            .mobile-brand { display: flex !important;
+            }
+            .desktop-title { display: none !important;
+            }
+            .mobile-logout-setting { display: flex !important;
+            }
+
+            /* Responsive Card Mitra Mode Mobile */
+            .mitra-card {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                text-align: left;
+                padding: 18px 15px;
+            }
+            .mitra-card .mitra-logo-wrapper {
+                margin: 0 15px 0 0;
+                width: 60px;
+                height: 60px;
+                flex-shrink: 0;
+            }
+            .mitra-card-content {
+                display: flex;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .mitra-card h4 {
+                font-size: 15px;
+                margin-bottom: 5px;
+            }
         }
-        .mobile-logout-setting { display: none; }
+        .mobile-logout-setting { display: none;
+        }
     </style>
 </head>
 <body>
@@ -681,17 +774,20 @@
 
     <section id="view-auth">
         <div class="auth-card" id="form-login">
+            
             <div class="auth-header">
                 <h1><i class="fa-solid fa-user-shield"></i> Go Borneo</h1>
                 <p>Admin & Owner Panel Login</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="login-username" class="form-control" placeholder="Username Admin">
+           
                 <div class="password-wrapper">
                     <input type="password" id="login-password" class="form-control" placeholder="Password" style="margin-top:0;">
                     <i class="fa-solid fa-eye password-toggle" onclick="togglePasswordVisibility('login-password', this)"></i>
                 </div>
                 <button class="btn-submit" onclick="processLogin()"><i class="fa-solid fa-right-to-bracket"></i> Masuk Dashboard</button>
+      
             </div>
             <div class="auth-switch">
                 Belum punya akses?
@@ -704,11 +800,13 @@
                 <h1>Registrasi Akses</h1>
                 <p>Daftar sebagai Administrator Baru</p>
             </div>
+     
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="reg-nama" class="form-control" placeholder="Nama Lengkap">
                 <input type="text" id="reg-username" class="form-control" placeholder="Username">
                 <input type="email" id="reg-email" class="form-control" placeholder="Alamat Email">
                 <input type="tel" id="reg-hp" class="form-control" placeholder="No. Handphone (Ex: 0812...)">
+     
                 <input type="text" id="reg-perusahaan" class="form-control" placeholder="Nama Perusahaan">
                 
                 <div style="text-align: left; margin-top: 5px;">
@@ -719,6 +817,7 @@
                 <div class="password-wrapper">
                     <input type="password" id="reg-password" class="form-control" placeholder="Password" style="margin-top:0;">
                     <i class="fa-solid fa-eye password-toggle" onclick="togglePasswordVisibility('reg-password', this)"></i>
+                
                 </div>
                 <small style="color:var(--text-muted); font-size:11px; margin-top:-5px; margin-bottom:5px;">
                     *Min 8 karakter, diawali huruf besar, kombinasi huruf & angka.
@@ -726,6 +825,7 @@
                 <button class="btn-submit" onclick="processRegister()"><i class="fa-solid fa-user-plus"></i> Buat Akun Admin</button>
             </div>
             <div class="auth-switch">
+       
                 Sudah punya akun? <span onclick="toggleAuth('login')">Kembali Login</span>
             </div>
         </div>
@@ -740,6 +840,7 @@
             </div>
             <div class="nav-item active" id="nav-dashboard" onclick="navigateTo('dashboard')">
                 <i class="fa-solid fa-chart-pie"></i>
+          
                 <span>Dashboard</span>
             </div>
             <div class="nav-item" id="nav-orders" onclick="navigateTo('orders')">
@@ -747,6 +848,7 @@
                 <span>Permintaan</span>
             </div>
             
+         
             <div class="nav-item" id="nav-mitra" onclick="navigateTo('mitra')">
                 <i class="fa-solid fa-users"></i>
                 <span>Mitra</span>
@@ -754,12 +856,14 @@
 
             <div class="nav-item" id="nav-settings" onclick="navigateTo('settings')">
                 <i class="fa-solid fa-gear"></i>
+               
                 <span>Pengaturan</span>
             </div>
             <div style="margin-top: auto;" class="nav-logout-desktop">
                  <div class="nav-item" onclick="triggerLogoutWarning()" style="color: var(--danger);">
                     <i class="fa-solid fa-power-off"></i>
                     <span>Keluar</span>
+         
                 </div>
             </div>
         </nav>
@@ -782,16 +886,19 @@
 
         <div class="main-container">
             <section id="view-dashboard" class="page-section active">
+               
                 <div class="metrics-grid" id="metricsCarouselGrid">
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: var(--success);"><i class="fa-solid fa-wallet"></i></div>
                         <div>
+                     
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL TOP-UP (IDR)</div>
                             <h2 id="metric-total-topup" style="font-size:18px; font-weight:800;">Rp 0</h2>
                         </div>
                     </div>
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: #a855f7;"><i class="fa-solid fa-receipt"></i></div>
+   
                         <div>
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL LANGGANAN (IDR)</div>
                             <h2 id="metric-total-sub" style="font-size:18px; font-weight:800;">Rp 0</h2>
@@ -799,6 +906,7 @@
                     </div>
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: var(--primary);"><i class="fa-solid fa-handshake"></i></div>
+   
                         <div>
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL MITRA BULANAN</div>
                             <h2 id="metric-mitra-bulanan" style="font-size:18px; font-weight:800;">0</h2>
@@ -806,6 +914,7 @@
                     </div>
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: var(--warning);"><i class="fa-solid fa-percent"></i></div>
+    
                         <div>
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL MITRA KOMISI</div>
                             <h2 id="metric-mitra-komisi" style="font-size:18px; font-weight:800;">0</h2>
@@ -829,6 +938,7 @@
             </section>
 
             <section id="view-orders" class="page-section">
+          
                 <div class="sticky-req-header">
                     <div class="request-tabs">
                         <button class="tab-btn active" onclick="switchRequestTab('topup', this)">
@@ -837,6 +947,7 @@
                             <span class="notif-badge" id="badge-topup">0</span>
                         </button>
                         <button class="tab-btn" onclick="switchRequestTab('sub', this)">
+    
                             <i class="fa-solid fa-credit-card"></i>
                             <span>Pembayaran Langganan</span>
                             <span class="notif-badge" id="badge-sub">0</span>
@@ -852,6 +963,7 @@
                     </div>
                     <div class="search-form">
                         <i class="fa-solid fa-magnifying-glass"></i>
+    
                         <input type="text" id="reqSearchInput" placeholder="Cari nama perusahaan atau nominal..." oninput="filterRequests()">
                     </div>
                 </div>
@@ -881,7 +993,7 @@
                     </div>
 
                     <div class="mitra-grid" id="container-mitra-list">
-                        </div>
+                    </div>
                 </div>
             </section>
 
@@ -969,6 +1081,7 @@
     </div>
 
     <div id="imageModal" class="modal" onclick="closeImageModal()">
+       
         <div class="modal-content" style="max-width: 550px;" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeImageModal()">&times;</button>
             <h3 style="margin-bottom: 15px; font-size:18px; font-family:'Poppins', sans-serif;"><i class="fa-solid fa-file-image"></i> Bukti Transfer</h3>
@@ -1026,6 +1139,7 @@
                     <span class="mitra-detail-label"><i class="fa-solid fa-user"></i> Nama Pemilik Akun</span>
                     <span class="mitra-detail-value" id="dtl-mitra-akun"></span>
                 </div>
+            
                 <div class="mitra-detail-row">
                     <span class="mitra-detail-label"><i class="fa-solid fa-phone"></i> No. Handphone</span>
                     <span class="mitra-detail-value" id="dtl-mitra-hp"></span>
@@ -1035,7 +1149,11 @@
                     <span class="mitra-detail-value" id="dtl-mitra-alamat" style="max-width: 50%; text-align: right; line-height: 1.4;"></span>
                 </div>
                 <div class="mitra-detail-row">
-                    <span class="mitra-detail-label"><i class="fa-solid fa-wallet"></i> Saldo Dompet</span>
+                    <span class="mitra-detail-label"><i class="fa-solid fa-car"></i> Total Armada</span>
+                    <span class="mitra-detail-value" id="dtl-mitra-armada"></span>
+                </div>
+                <div class="mitra-detail-row">
+                    <span class="mitra-detail-label" id="dtl-label-saldo"><i class="fa-solid fa-wallet"></i> Saldo Dompet</span>
                     <span class="mitra-detail-value" id="dtl-mitra-saldo" style="color: var(--success);"></span>
                 </div>
             </div>
@@ -1074,7 +1192,6 @@
             
             const sbName = document.getElementById('sidebar-company-name');
             if(sbName) sbName.innerText = compName;
-            
             const mbName = document.getElementById('mobile-header-company-name');
             if(mbName) mbName.innerText = compName;
 
@@ -1356,7 +1473,7 @@
             const cards = container.querySelectorAll('.mitra-card');
             cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
-                card.style.display = text.includes(keyword) ? "block" : "none";
+                card.style.display = text.includes(keyword) ? "flex" : "none"; /* Update ke flex untuk mobile style */
             });
         }
 
@@ -1421,6 +1538,7 @@
                 try {
                     let response = await fetch(GAS_API_URL, {
                         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
+                       
                         body: JSON.stringify({ action: "getAdminDashboardData", chartFilter: currentChartFilter })
                     });
                     let result = await response.json();
@@ -1429,6 +1547,7 @@
                         let newSub = result.requests.subscription ? result.requests.subscription.length : 0;
                         
                         if(newTopUp > lastTopUpCount) showToast("Terdapat antrean Top-Up Saldo baru!", false);
+        
                         if(newSub > lastSubCount) showToast("Terdapat permintaan Langganan baru!", false);
                         
                         globalRawData = result;
@@ -1487,19 +1606,23 @@
                 data: {
                     labels: labels,
                     datasets: [{
+                    
                         label: 'Transaksi Sukses', data: datasets,
                         borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.1)',
                         borderWidth: 3, fill: true, tension: 0.4, pointBackgroundColor: '#0369a1'
                     }]
+           
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
+       
                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
                         x: { grid: { display: false } }
                     }
                 }
+       
             });
         }
 
@@ -1515,7 +1638,8 @@
 
             globalMitraList.forEach((mitra, index) => {
                 let logoSrc = mitra.logo || 'https://via.placeholder.com/150?text=Logo';
-                let skemaBadge = mitra.skema.toLowerCase() === 'langganan' ? 'badge-purple' : 'badge-info';
+                let isLangganan = mitra.skema.toLowerCase().includes('langganan');
+                let skemaBadge = isLangganan ? 'badge-warning' : 'badge-success';
                 
                 // Menambahkan delay animasi untuk staggered effect (0s, 0.1s, 0.2s...)
                 let animDelay = (index * 0.1) + 's';
@@ -1525,8 +1649,10 @@
                         <div class="mitra-logo-wrapper">
                             <img src="${logoSrc}" class="mitra-logo" alt="Logo ${mitra.namaPerusahaan}" onerror="this.src='https://via.placeholder.com/150?text=Logo'">
                         </div>
-                        <h4>${mitra.namaPerusahaan}</h4>
-                        <span class="badge ${skemaBadge}">${mitra.skema.toUpperCase()}</span>
+                        <div class="mitra-card-content">
+                            <h4>${mitra.namaPerusahaan}</h4>
+                            <span class="badge ${skemaBadge}">${mitra.skema.toUpperCase()}</span>
+                        </div>
                     </div>
                 `;
             });
@@ -1547,7 +1673,20 @@
             document.getElementById('dtl-mitra-akun').innerText = mitra.username;
             document.getElementById('dtl-mitra-hp').innerText = mitra.noHp ? mitra.noHp.replace(/'/g, '') : '-';
             document.getElementById('dtl-mitra-alamat').innerText = mitra.alamat || '-';
-            document.getElementById('dtl-mitra-saldo').innerText = "Rp " + formatNumber(mitra.saldo || 0);
+            document.getElementById('dtl-mitra-armada').innerText = (mitra.totalArmada || 0) + " Unit";
+
+            let isLangganan = mitra.skema.toLowerCase().includes('langganan');
+            if (isLangganan) {
+                document.getElementById('dtl-label-saldo').innerHTML = '<i class="fa-solid fa-calendar-check"></i> Batas Langganan';
+                document.getElementById('dtl-mitra-saldo').innerText = mitra.batasLangganan ? formatTanggalIndo(mitra.batasLangganan) : "Belum ada";
+                document.getElementById('dtl-mitra-saldo').style.color = "var(--warning)";
+                document.getElementById('dtl-mitra-skema').className = "badge badge-warning";
+            } else {
+                document.getElementById('dtl-label-saldo').innerHTML = '<i class="fa-solid fa-wallet"></i> Saldo Dompet';
+                document.getElementById('dtl-mitra-saldo').innerText = "Rp " + formatNumber(mitra.saldo || 0);
+                document.getElementById('dtl-mitra-saldo').style.color = "var(--success)";
+                document.getElementById('dtl-mitra-skema').className = "badge badge-success";
+            }
 
             document.getElementById('mitraDetailModal').style.display = "flex";
         }
@@ -1569,52 +1708,65 @@
                 requests.topup.forEach(item => {
                     containerTopUp.innerHTML += `
                         <div class="request-card">
+                      
                             <div class="request-header">
                                 <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
                                 <span class="badge badge-pending">PENDING</span>
+                       
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Nominal Top-Up:</span><strong style="color:var(--success);">Rp ${formatNumber(item.nominal)}</strong></div>
+                         
                             </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
                             <div class="action-buttons">
                                 <button class="btn-action btn-reject" onclick="triggerAction('rejectTopUp', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                   
                                 <button class="btn-action btn-approve" onclick="triggerAction('approveTopUp', '${item.idRow || item.id}')"><i class="fa-solid fa-check"></i> Setujui</button>
                             </div>
                         </div>`;
                 });
+          
             } else { containerTopUp.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Tidak ada antrean top-up.</div>`; }
 
             if(requests && requests.subscription && requests.subscription.length > 0) {
                 requests.subscription.forEach(item => {
                     containerSub.innerHTML += `
                         <div class="request-card">
+            
                             <div class="request-header">
                                 <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
                                 <span class="badge badge-pending">PENDING</span>
+             
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
                                 <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Total Bayar:</span><strong style="color:var(--primary-dark);">Rp ${formatNumber(item.totalBayar)}</strong></div>
+               
                             </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
                             <div class="action-buttons">
                                 <button class="btn-action btn-reject" onclick="triggerAction('rejectSub', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                   
                                 <button class="btn-action btn-approve" onclick="triggerAction('approveSub', '${item.idRow || item.id}')"><i class="fa-solid fa-check"></i> Setujui</button>
                             </div>
                         </div>`;
                 });
+          
             } else { containerSub.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Tidak ada antrean langganan.</div>`; }
 
             if(history && history.topup && history.topup.length > 0) {
                 history.topup.forEach(item => {
                     let bdg = item.status.toLowerCase() === "selesai" ? "badge-success" : "badge-danger";
                     containerHistTopUp.innerHTML += `
+        
                         <div class="request-card">
                             <div class="request-header">
                                 <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
+                  
                                 <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
+                        
                                 <div style="display:flex; justify-content:space-between;"><span>Nominal Top-Up:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.nominal)}</strong></div>
                             </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
@@ -1629,9 +1781,11 @@
                         <div class="request-card">
                             <div class="request-header">
                                 <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
+         
                                 <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
                             </div>
                             <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
+               
                                 <div style="display:flex; justify-content:space-between;"><span>Total Bayar:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.totalBayar)}</strong></div>
                             </div>
                             <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
@@ -1645,6 +1799,7 @@
         function triggerAction(actionType, rowId) {
             let label = actionType.includes("approve") ? "menyetujui" : "menolak";
             let type = actionType.includes("approve") ? "approve" : "reject";
+      
             let tx = actionType.includes("TopUp") ? "Top-Up Saldo" : "Langganan";
             
             showConfirmModal(type, `Apakah Anda yakin ingin ${label} pengajuan ${tx} ini?`, () => {
@@ -1669,7 +1824,8 @@
             document.getElementById('modalImgTarget').src = url;
             document.getElementById('imageModal').style.display = "flex";
         }
-        function closeImageModal() { document.getElementById('imageModal').style.display = "none"; }
+        function closeImageModal() { document.getElementById('imageModal').style.display = "none";
+        }
 
         // SETTINGS MODAL MANAGEMENT
         function updateSettingsPreviews(settings) {
@@ -1695,17 +1851,20 @@
                     <label style="font-size:13px; font-weight:600;">Username (Tidak dapat diubah)</label>
                     <input type="text" id="edit-adm-user" class="form-control" value="${usr.username || ''}" disabled style="background:#e2e8f0; cursor:not-allowed;">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">Nama Lengkap</label>
+                   
                     <input type="text" id="edit-adm-nama" class="form-control" value="${usr.namaLengkap || ''}" placeholder="Nama Lengkap">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">Email</label>
                     <input type="email" id="edit-adm-email" class="form-control" value="${usr.email || ''}" placeholder="Email Admin">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">No Handphone</label>
+              
                     <input type="text" id="edit-adm-hp" class="form-control" value="${usr.noHp || ''}" placeholder="08xxxx">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">Password Baru (Kosongkan jika tidak ubah)</label>
                     <input type="password" id="edit-adm-pass" class="form-control" placeholder="Password Baru">
                     <button class="btn-save-settings" style="background:var(--success);" onclick="saveAdminAccount()"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Akun</button>
                 `;
             } else if(type === 'komisi') {
-                titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
+       
+                 titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Nominal Potongan per Transaksi (%)</label>
                     <input type="number" id="mod-komisi" class="form-control" value="${st.komisi || ''}" placeholder="Contoh: 5000">
@@ -1713,6 +1872,7 @@
                 `;
             } else if(type === 'trial') {
                 titleEl.innerHTML = '<i class="fa-solid fa-hourglass-start" style="color:var(--primary);"></i> Masa Berlaku Trial';
+               
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Durasi Trial Pengguna Baru (Hari)</label>
                     <input type="number" id="mod-trial" class="form-control" value="${st.trialDuration || ''}" placeholder="Contoh: 7">
@@ -1720,6 +1880,7 @@
                 `;
             } else if(type === 'kodepesanan') {
                 titleEl.innerHTML = '<i class="fa-solid fa-barcode" style="color:#64748b;"></i> Prefiks Kode Booking';
+              
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Awalan Kode Booking / Invoice</label>
                     <input type="text" id="mod-prefiks" class="form-control" value="${st.prefiksKode || ''}" placeholder="Contoh: GB-">
@@ -1727,19 +1888,23 @@
                 `;
             } else if(type === 'rekening') {
                 titleEl.innerHTML = '<i class="fa-solid fa-building-columns" style="color:var(--success);"></i> Kelola Sheet Rekening';
+               
                 let listHtml = '';
                 if(st.rekeningList && st.rekeningList.length > 0) {
                     st.rekeningList.forEach((rek, idx) => {
                         let logoSrc = rek.logo || rek.icon || 'https://via.placeholder.com/80?text=Bank';
+                     
                         listHtml += `
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
+                                 
                                     <img src="${logoSrc}" class="setting-item-img" alt="Logo" onerror="this.src='https://via.placeholder.com/80?text=Bank'">
                                     <div>
                                         <strong style="display:block; font-size:14px;">${rek.bank} - ${rek.norek}</strong>
                                         <span style="font-size:11px; color:var(--text-muted);">${rek.atasNama}</span>
                                     </div>
                                 </div>
+                                
                                 <button class="btn-delete-item" onclick="deleteSettingItem('rekening', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
                     });
@@ -1757,6 +1922,7 @@
                 `;
             } else if(type === 'kendaraan') {
                 titleEl.innerHTML = '<i class="fa-solid fa-car" style="color:#a855f7;"></i> Kelola Sheet Jenis Kendaraan';
+      
                 let listHtml = '';
                 if(st.jenisKendaraanList && st.jenisKendaraanList.length > 0) {
                     st.jenisKendaraanList.forEach((jns, idx) => {
@@ -1764,18 +1930,22 @@
                         listHtml += `
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
-                                    <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Car'">
+                               
+                                     <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Car'">
                                     <span style="font-size:14px; font-weight:700;">${jns.nama}</span>
                                 </div>
+                     
                                 <button class="btn-delete-item" onclick="deleteSettingItem('kendaraan', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
                     });
-                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data jenis kendaraan.</p>'; }
+                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data jenis kendaraan.</p>';
+                }
 
                 bodyEl.innerHTML = `
                     <div style="max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;">${listHtml}</div>
                     <hr style="border:none; border-top:1px dashed #cbd5e1; margin-bottom:15px;">
                     <h5 style="font-size:14px; margin-bottom:5px;">Tambah Jenis Kendaraan</h5>
+         
                     <input type="text" id="add-jns-nama" class="form-control" placeholder="Nama Jenis Kendaraan (Ex: Toyota Hiace)">
                     <input type="text" id="add-jns-icon" class="form-control" placeholder="URL Icon Gambar (Tersimpan di Kolom B)">
                     <button class="btn-save-settings" onclick="addSettingItem('kendaraan')" style="background:#a855f7;"><i class="fa-solid fa-plus"></i> Tambah Kendaraan</button>
@@ -1787,20 +1957,24 @@
                     st.fasilitasList.forEach((fas, idx) => {
                         let iconSrc = fas.icon || fas.logo || fas.gambar || 'https://via.placeholder.com/80?text=Star';
                         listHtml += `
+         
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
                                     <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Star'">
-                                    <span style="font-size:14px; font-weight:700;">${fas.nama}</span>
+       
+                                     <span style="font-size:14px; font-weight:700;">${fas.nama}</span>
                                 </div>
                                 <button class="btn-delete-item" onclick="deleteSettingItem('fasilitas', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
                     });
-                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data fasilitas.</p>'; }
+                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data fasilitas.</p>';
+                }
 
                 bodyEl.innerHTML = `
                     <div style="max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;">${listHtml}</div>
                     <hr style="border:none; border-top:1px dashed #cbd5e1; margin-bottom:15px;">
                     <h5 style="font-size:14px; margin-bottom:5px;">Tambah Fasilitas Baru</h5>
+         
                     <input type="text" id="add-fas-nama" class="form-control" placeholder="Nama Fasilitas (Ex: AC, Reclining Seat)">
                     <input type="text" id="add-fas-icon" class="form-control" placeholder="URL Icon Gambar (Tersimpan di Kolom B)">
                     <button class="btn-save-settings" onclick="addSettingItem('fasilitas')" style="background:#ec4899;"><i class="fa-solid fa-plus"></i> Tambah Fasilitas</button>
@@ -1812,24 +1986,31 @@
                     st.paketAksesList.forEach((pkt, idx) => {
                         listHtml += `
                             <div class="setting-list-item">
+             
                                 <div class="setting-item-content">
                                     <div style="background:rgba(249,115,22,0.1); color:#f97316; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                                   
                                         <i class="fa-solid fa-box" style="font-size: 18px;"></i>
                                     </div>
                                     <div>
+                   
                                         <strong style="display:block; font-size:14px;">${pkt.nama}</strong>
                                         <span style="font-size:11px; color:var(--text-muted);">Biaya: Rp ${formatNumber(pkt.harga)}</span>
+                                 
                                     </div>
                                 </div>
                                 <button class="btn-delete-item" onclick="deleteSettingItem('paketakses', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
+                            
                             </div>`;
                     });
-                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data paket akses.</p>'; }
+                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data paket akses.</p>';
+                }
 
                 bodyEl.innerHTML = `
                     <div style="max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;">${listHtml}</div>
                     <hr style="border:none; border-top:1px dashed #cbd5e1; margin-bottom:15px;">
                     <h5 style="font-size:14px; margin-bottom:5px;">Tambah Paket Akses Baru</h5>
+        
                     <input type="text" id="add-paket-nama" class="form-control" placeholder="Waktu / Nama Paket (Ex: 1 Bulan)">
                     <input type="number" id="add-paket-harga" class="form-control" placeholder="Biaya (Ex: 50000)">
                     <button class="btn-save-settings" onclick="addSettingItem('paketakses')" style="background:#f97316;"><i class="fa-solid fa-plus"></i> Tambah Paket</button>
@@ -1838,7 +2019,8 @@
 
             document.getElementById('settingInputModal').style.display = "flex";
         }
-        function closeSettingModal() { document.getElementById('settingInputModal').style.display = "none"; }
+        function closeSettingModal() { document.getElementById('settingInputModal').style.display = "none";
+        }
 
         async function saveAdminAccount() {
             const usr = document.getElementById('edit-adm-user').value;
@@ -1854,6 +2036,7 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({
                         action: "updateAdminAccount",
+      
                         username: usr, namaLengkap: nama,
                         email: email, noHp: hp, password: pass
                     })
@@ -1895,9 +2078,10 @@
                     showToast("Pengaturan berhasil disimpan!");
                     closeSettingModal();
                     fetchInitialDashboardData();
-                } else { showToast("Gagal: " + res.message, true); showLoader("", false); }
+                } else { showToast("Gagal: " + res.message, true); showLoader("", false);
+                }
             } catch (e) { showToast("Tersimpan secara lokal (Offline Mode).");
-            closeSettingModal(); showLoader("", false); }
+                closeSettingModal(); showLoader("", false); }
         }
 
         async function addSettingItem(category) {
@@ -1936,21 +2120,24 @@
                     fetchInitialDashboardData();
                 } else { showToast(res.message, true); showLoader("", false); }
             } catch(e) { showToast("Ditambahkan dalam mode simulasi.");
-            closeSettingModal(); showLoader("", false); }
+                closeSettingModal(); showLoader("", false); }
         }
 
         async function deleteSettingItem(category, index) {
             showConfirmModal('reject', "Apakah Anda yakin ingin menghapus item ini dari sheet pengaturan?", async () => {
                 showLoader("Menghapus Data...");
                 try {
+                 
                     let res = await fetch(GAS_API_URL, {
                         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                         body: JSON.stringify({ action: "deleteSettingList", category: category, index: index })
                      }).then(r => r.json());
-                       
+       
+                        
                     if(res.status === "success") {
                         showToast("Data berhasil dihapus!");
                         closeSettingModal();
+           
                         fetchInitialDashboardData();
                     } else { showToast(res.message, true); showLoader("", false); }
                 } catch(e) { showToast("Dihapus dalam mode simulasi.");
@@ -1960,7 +2147,8 @@
             });
         }
 
-        function formatNumber(num) { return new Intl.NumberFormat('id-ID').format(num); }
+        function formatNumber(num) { return new Intl.NumberFormat('id-ID').format(num);
+        }
 
         function loadMockData() {
             renderMetrics({ mitraBulanan: 14, mitraKomisi: 32, totalTopUp: 4750000, totalSubscription: 2100000 });
@@ -1980,12 +2168,10 @@
                 topup: [{ id: "10", namaPerusahaan: "Kutai Express", tanggal: new Date(Date.now() - 86400000).toISOString(), nominal: 1000000, status: "Selesai", strukUrl: "https://via.placeholder.com/400" }],
                 subscription: [{ id: "11", namaPerusahaan: "Borneo Trans Mandiri", tanggal: new Date(Date.now() - 172800000).toISOString(), totalBayar: 300000, status: "Selesai", strukUrl: "https://via.placeholder.com/400" }]
             };
-            
             globalMitraList = [
-                { username: "syahrin_admin", namaPerusahaan: "Borneo Trans Mandiri", skema: "Langganan", noHp: "081234567890", alamat: "Jl. Mulawarman No.1, Samarinda", logo: "", saldo: 0 },
-                { username: "kutai_boss", namaPerusahaan: "Kutai Express", skema: "Komisi Pertransaksi", noHp: "085211223344", alamat: "Jl. Sudirman, Balikpapan", logo: "", saldo: 250000 }
+                { username: "syahrin_admin", namaPerusahaan: "Borneo Trans Mandiri", skema: "Langganan", noHp: "081234567890", alamat: "Jl. Mulawarman No.1, Samarinda", logo: "", saldo: 0, totalArmada: 5, batasLangganan: new Date(Date.now() + 864000000).toISOString() },
+                { username: "kutai_boss", namaPerusahaan: "Kutai Express", skema: "Komisi Pertransaksi", noHp: "085211223344", alamat: "Jl. Sudirman, Balikpapan", logo: "", saldo: 250000, totalArmada: 12, batasLangganan: null }
             ];
-
             updateNotificationBadges(mockReq);
             renderRequests(mockReq, mockHist);
             renderMitraList();
@@ -1996,6 +2182,7 @@
                 prefiksKode: "GB-", 
                 rekeningList: [{bank:"BCA", norek:"123456", atasNama:"Admin", logo:"https://cdn-icons-png.flaticon.com/512/2830/2830284.png"}], 
                 jenisKendaraanList: [{nama:"Hiace", icon:"https://cdn-icons-png.flaticon.com/512/3097/3097136.png"}], 
+ 
                 fasilitasList: [{nama:"AC", icon:"https://cdn-icons-png.flaticon.com/512/900/900833.png"}],
                 paketAksesList: [{nama: "1 Bulan", harga: 50000}, {nama: "3 Bulan", harga: 140000}] 
             });
