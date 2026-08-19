@@ -44,7 +44,7 @@
             top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
-            z-index: 99999;
+            z-index: 999999; /* Diperbarui agar berada paling depan */
             display: none;
             flex-direction: column;
             justify-content: center;
@@ -1116,7 +1116,8 @@
         </div>
     </div>
 
-    <div id="actionConfirmModal" class="modal">
+    <!-- Menambahkan z-index: 100010 agar berada di depan modal lain yang menggunakan class .modal (100000) -->
+    <div id="actionConfirmModal" class="modal" style="z-index: 100010;">
         <div class="modal-content" style="max-width: 400px;">
             <div id="confirmIcon" style="margin-bottom: 15px;">
                 <!-- Icon will be injected by JavaScript -->
@@ -1130,7 +1131,7 @@
         </div>
     </div>
 
-    <div id="logoutWarningModal" class="modal">
+    <div id="logoutWarningModal" class="modal" style="z-index: 100010;">
         <div class="modal-content logout-modal-content" style="max-width: 380px;">
             <div class="logout-icon-wrapper">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
@@ -1191,7 +1192,7 @@
         </div>
     </div>
 
-    <script>
+<script>
         // MASUKAN URL GOOGLE APPS SCRIPT ANDA DI SINI
         const GAS_API_URL = "https://script.google.com/macros/s/AKfycbz9oI7WVGzV2nrgAyW965T_2XKw7uxHYkU13ouJVlb8iRzmnVXEPGhDvqtNjxOnKQsYLg/exec";
 
@@ -1206,9 +1207,19 @@
         let currentChartFilter = 'hari'; 
         
         let globalMitraList = []; // Menyimpan data mitra yang dimuat
+        let currentSettingType = null; // Melacak modal pengaturan yang sedang terbuka untuk auto-refresh
 
         window.addEventListener('DOMContentLoaded', () => {
             checkAutoLogin();
+
+            // Guard Listener Konfirmasi Tombol
+            const confirmBtn = document.getElementById('confirmProceedBtn');
+            if (confirmBtn) {
+                confirmBtn.addEventListener('click', () => {
+                    if (actionCallback) actionCallback();
+                    closeConfirmModal();
+                });
+            }
         });
 
         // ================= DYNAMIC BRANDING LOGIC =================
@@ -1217,7 +1228,8 @@
             const logoUrl = user.logo || "";
             const adminName = user.namaLengkap || user.username;
 
-            document.getElementById('display-admin-name').innerText = adminName;
+            const displayAdmin = document.getElementById('display-admin-name');
+            if (displayAdmin) displayAdmin.innerText = adminName;
             
             const sbName = document.getElementById('sidebar-company-name');
             if(sbName) sbName.innerText = compName;
@@ -1244,8 +1256,11 @@
                 try {
                     const user = JSON.parse(savedSession);
                     if (user && user.username) {
-                        document.getElementById('view-auth').style.display = 'none';
-                        document.getElementById('dashboard-wrapper').style.display = 'block';
+                        const viewAuth = document.getElementById('view-auth');
+                        const dashWrapper = document.getElementById('dashboard-wrapper');
+                        
+                        if (viewAuth) viewAuth.style.display = 'none';
+                        if (dashWrapper) dashWrapper.style.display = 'block';
                         
                         updateBranding(user); 
                         
@@ -1262,26 +1277,39 @@
 
         // UI Helpers
         function toggleAuth(view) {
-            document.getElementById('form-login').style.display = view === 'login' ? 'block' : 'none';
-            document.getElementById('form-register').style.display = view === 'register' ? 'block' : 'none';
+            const formLogin = document.getElementById('form-login');
+            const formReg = document.getElementById('form-register');
+            if (formLogin) formLogin.style.display = view === 'login' ? 'block' : 'none';
+            if (formReg) formReg.style.display = view === 'register' ? 'block' : 'none';
         }
 
         function showLoader(message, isActive = true) {
             const loader = document.getElementById('globalLoader');
-            document.getElementById('loadingText').innerText = message;
-            if(isActive) { loader.classList.add('active'); }
-            else { loader.classList.remove('active'); }
+            const loadingText = document.getElementById('loadingText');
+            if (loadingText) loadingText.innerText = message;
+            if (loader) {
+                if(isActive) { 
+                    loader.classList.add('active'); 
+                } else { 
+                    loader.classList.remove('active'); 
+                }
+            }
         }
 
         function showToast(message, isError = false) {
             const toast = document.getElementById('toastAlert');
             const icon = document.getElementById('toastIcon');
+            const toastMsg = document.getElementById('toastMessage');
             
+            if (!toast || !icon || !toastMsg) return;
+
+            // Perbaikan: Pastikan Z-Index selalu paling depan
+            toast.style.zIndex = "999999"; 
             toast.style.animation = 'none';
             toast.offsetHeight; 
             toast.style.animation = 'slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
 
-            document.getElementById('toastMessage').innerText = message;
+            toastMsg.innerText = message;
             if(isError) {
                 toast.style.background = "rgba(239, 68, 68, 0.95)";
                 icon.className = "fa-solid fa-circle-exclamation";
@@ -1295,6 +1323,7 @@
 
         function togglePasswordVisibility(inputId, iconEl) {
             const input = document.getElementById(inputId);
+            if(!input) return;
             if(input.type === "password") {
                 input.type = "text";
                 iconEl.classList.remove('fa-eye');
@@ -1317,6 +1346,7 @@
         }
 
         function formatNumber(num) {
+            if (num === undefined || num === null) return "0";
             return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         }
 
@@ -1338,10 +1368,12 @@
         }
 
         function triggerLogoutWarning() {
-            document.getElementById('logoutWarningModal').style.display = "flex";
+            const modal = document.getElementById('logoutWarningModal');
+            if (modal) modal.style.display = "flex";
         }
         function closeLogoutModal() {
-            document.getElementById('logoutWarningModal').style.display = "none";
+            const modal = document.getElementById('logoutWarningModal');
+            if (modal) modal.style.display = "none";
         }
         function executeLogout() {
             closeLogoutModal();
@@ -1349,48 +1381,64 @@
             if (autoSlideInterval) clearInterval(autoSlideInterval);
             
             localStorage.removeItem('goBorneoAdminSession');
-            document.getElementById('dashboard-wrapper').style.display = 'none';
-            document.getElementById('view-auth').style.display = 'flex';
-            document.getElementById('login-username').value = '';
-            document.getElementById('login-password').value = '';
+            const dashWrapper = document.getElementById('dashboard-wrapper');
+            const viewAuth = document.getElementById('view-auth');
+            const loginUser = document.getElementById('login-username');
+            const loginPass = document.getElementById('login-password');
+
+            if (dashWrapper) dashWrapper.style.display = 'none';
+            if (viewAuth) viewAuth.style.display = 'flex';
+            if (loginUser) loginUser.value = '';
+            if (loginPass) loginPass.value = '';
             showToast("Anda telah berhasil keluar dari sistem.");
         }
 
-        /* --- PENYESUAIAN ANIMASI CHECKMARK DI FUNGSI INI --- */
+        /* --- ANIMASI CHECKMARK & TEKS TOMBOL YANG DIPERBARUI --- */
         function showConfirmModal(type, msg, callback) {
             const modal = document.getElementById('actionConfirmModal');
-            document.getElementById('confirmMessage').innerText = msg;
+            const confirmMsg = document.getElementById('confirmMessage');
             const proceedBtn = document.getElementById('confirmProceedBtn');
             const icon = document.getElementById('confirmIcon');
+
+            if (confirmMsg) confirmMsg.innerText = msg;
+            
             if(type === 'approve') {
-                proceedBtn.className = "btn-action btn-approve";
-                proceedBtn.innerHTML = "<i class='fa-solid fa-check'></i> Setujui";
-                icon.innerHTML = "<i class='fa-solid fa-circle-check icon-animated-check'></i>";
-                icon.style.color = ""; // Color sudah dikelola class CSS
+                if (proceedBtn) {
+                    proceedBtn.className = "btn-action btn-approve";
+                    proceedBtn.innerHTML = "<i class='fa-solid fa-check'></i> Setujui";
+                }
+                if (icon) {
+                    icon.innerHTML = "<i class='fa-solid fa-circle-check icon-animated-check'></i>";
+                    icon.style.color = ""; // Color sudah dikelola class CSS
+                }
             } else {
-                proceedBtn.className = "btn-action btn-reject";
-                proceedBtn.innerHTML = "<i class='fa-solid fa-xmark'></i> Tolak";
-                icon.innerHTML = "<i class='fa-solid fa-triangle-exclamation' style='font-size: 50px;'></i>";
-                icon.style.color = "var(--danger)";
+                if (proceedBtn) {
+                    proceedBtn.className = "btn-action btn-reject";
+                    proceedBtn.innerHTML = "<i class='fa-solid fa-trash'></i> Hapus";
+                }
+                if (icon) {
+                    icon.innerHTML = "<i class='fa-solid fa-triangle-exclamation' style='font-size: 50px;'></i>";
+                    icon.style.color = "var(--danger)";
+                }
             }
 
             actionCallback = callback;
-            modal.style.display = "flex";
+            if (modal) modal.style.display = "flex";
         }
 
         function closeConfirmModal() {
-            document.getElementById('actionConfirmModal').style.display = "none";
+            const modal = document.getElementById('actionConfirmModal');
+            if (modal) modal.style.display = "none";
             actionCallback = null;
         }
-        document.getElementById('confirmProceedBtn').addEventListener('click', () => {
-            if(actionCallback) actionCallback();
-            closeConfirmModal();
-        });
 
         // Authentication API Logic
         async function processLogin() {
-            const user = document.getElementById('login-username').value;
-            const pass = document.getElementById('login-password').value;
+            const userEl = document.getElementById('login-username');
+            const passEl = document.getElementById('login-password');
+            const user = userEl ? userEl.value : '';
+            const pass = passEl ? passEl.value : '';
+
             if(!user || !pass) return showToast("Username dan Password wajib diisi!", true);
 
             showLoader("Memeriksa Kredensial...");
@@ -1399,10 +1447,16 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: "login", username: user, password: pass })
                 }).then(r => r.json());
+                
+                showLoader("", false); // Hilangkan Loading Instan
+                
                 if(res.status === "success") {
                     localStorage.setItem('goBorneoAdminSession', JSON.stringify(res.user));
-                    document.getElementById('view-auth').style.display = 'none';
-                    document.getElementById('dashboard-wrapper').style.display = 'block';
+                    const viewAuth = document.getElementById('view-auth');
+                    const dashWrapper = document.getElementById('dashboard-wrapper');
+                    
+                    if (viewAuth) viewAuth.style.display = 'none';
+                    if (dashWrapper) dashWrapper.style.display = 'block';
                     
                     updateBranding(res.user);
                     
@@ -1412,25 +1466,27 @@
                     startMetricsAutoSlide();
                 } else {
                     showToast(res.message, true);
-                    showLoader("", false);
                 }
             } catch (e) {
+                showLoader("", false);
                 showToast("Koneksi Error. Mengaktifkan mode simulasi...", true);
                 setTimeout(() => {
-                    document.getElementById('view-auth').style.display = 'none';
-                    document.getElementById('dashboard-wrapper').style.display = 'block';
-                    showLoader("", false); startRealtimePolling(); startMetricsAutoSlide();
+                    const viewAuth = document.getElementById('view-auth');
+                    const dashWrapper = document.getElementById('dashboard-wrapper');
+                    if (viewAuth) viewAuth.style.display = 'none';
+                    if (dashWrapper) dashWrapper.style.display = 'block';
+                    startRealtimePolling(); startMetricsAutoSlide();
                 }, 1000);
             }
         }
 
         async function processRegister() {
-            const nama = document.getElementById('reg-nama').value;
-            const user = document.getElementById('reg-username').value;
-            const email = document.getElementById('reg-email').value;
-            const hp = document.getElementById('reg-hp').value;
-            const perusahaan = document.getElementById('reg-perusahaan').value;
-            const pass = document.getElementById('reg-password').value;
+            const nama = document.getElementById('reg-nama')?.value;
+            const user = document.getElementById('reg-username')?.value;
+            const email = document.getElementById('reg-email')?.value;
+            const hp = document.getElementById('reg-hp')?.value;
+            const perusahaan = document.getElementById('reg-perusahaan')?.value;
+            const pass = document.getElementById('reg-password')?.value;
             const logoInput = document.getElementById('reg-logo');
 
             if(!nama || !user || !email || !hp || !perusahaan || !pass) return showToast("Seluruh formulir wajib diisi!", true);
@@ -1439,7 +1495,7 @@
                 return showToast("Format Password tidak sesuai standar keamanan!", true);
             }
             
-            if(logoInput.files.length === 0) {
+            if(!logoInput || logoInput.files.length === 0) {
                 return showToast("Logo Perusahaan wajib diunggah!", true);
             }
             
@@ -1463,22 +1519,30 @@
                         namaPerusahaan: perusahaan, logoBase64: base64Logo
                     })
                 }).then(r => r.json());
-                showLoader("", false);
+                
+                showLoader("", false); // Hilangkan Loading Instan
+                
                 if(res.status === "success") {
                     showToast("Registrasi Admin Berhasil! Silakan Login.");
                     toggleAuth('login');
-                } else { showToast(res.message, true); }
+                } else { 
+                    showToast(res.message, true); 
+                }
             } catch (e) { 
-                showToast("Gagal mendaftar, periksa koneksi.", true);
                 showLoader("", false); 
+                showToast("Gagal mendaftar, periksa koneksi.", true);
             }
         }
 
         function navigateTo(pageId) {
             document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.page-section').forEach(el => el.classList.remove('active'));
-            document.getElementById(`nav-${pageId}`).classList.add('active');
-            document.getElementById(`view-${pageId}`).classList.add('active');
+            
+            const navEl = document.getElementById(`nav-${pageId}`);
+            const viewEl = document.getElementById(`view-${pageId}`);
+            
+            if(navEl) navEl.classList.add('active');
+            if(viewEl) viewEl.classList.add('active');
         }
 
         function switchRequestTab(tabId, el) {
@@ -1486,14 +1550,18 @@
             if(el) el.classList.add('active');
             
             document.querySelectorAll('.tab-pane').forEach(pane => pane.style.display = 'none');
-            document.getElementById(`tab-content-${tabId}`).style.display = 'block';
+            const targetContent = document.getElementById(`tab-content-${tabId}`);
+            if(targetContent) targetContent.style.display = 'block';
             
             filterRequests();
         }
 
         function filterRequests() {
-            const keyword = document.getElementById('reqSearchInput').value.toLowerCase();
+            const searchInput = document.getElementById('reqSearchInput');
+            if (!searchInput) return;
+            const keyword = searchInput.value.toLowerCase();
             const activePane = document.querySelector('.tab-pane[style*="block"]') || document.getElementById('tab-content-topup');
+            if (!activePane) return;
             const cards = activePane.querySelectorAll('.request-card');
             cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
@@ -1503,8 +1571,11 @@
         
         // Filter Pencarian Mitra
         function filterMitra() {
-            const keyword = document.getElementById('mitraSearchInput').value.toLowerCase();
+            const searchInput = document.getElementById('mitraSearchInput');
+            if(!searchInput) return;
+            const keyword = searchInput.value.toLowerCase();
             const container = document.getElementById('container-mitra-list');
+            if(!container) return;
             const cards = container.querySelectorAll('.mitra-card');
             cards.forEach(card => {
                 const text = card.innerText.toLowerCase();
@@ -1513,7 +1584,8 @@
         }
 
         async function onChartFilterChange() {
-            currentChartFilter = document.getElementById('chartFilter').value;
+            const filterEl = document.getElementById('chartFilter');
+            if(filterEl) currentChartFilter = filterEl.value;
             showLoader("Memperbarui Grafik...", true);
             
             try {
@@ -1561,9 +1633,10 @@
                         renderMitraList();
                     }
                 }
-            } catch (error) { console.error(error);
-            } 
-            finally { showLoader("", false);
+            } catch (error) { 
+                console.error(error);
+            } finally { 
+                showLoader("", false);
             }
         }
 
@@ -1573,7 +1646,6 @@
                 try {
                     let response = await fetch(GAS_API_URL, {
                         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-                       
                         body: JSON.stringify({ action: "getAdminDashboardData", chartFilter: currentChartFilter })
                     });
                     let result = await response.json();
@@ -1582,7 +1654,6 @@
                         let newSub = result.requests.subscription ? result.requests.subscription.length : 0;
                         
                         if(newTopUp > lastTopUpCount) showToast("Terdapat antrean Top-Up Saldo baru!", false);
-        
                         if(newSub > lastSubCount) showToast("Terdapat permintaan Langganan baru!", false);
                         
                         globalRawData = result;
@@ -1611,27 +1682,38 @@
             const badgeTopUp = document.getElementById('badge-topup');
             const badgeSub = document.getElementById('badge-sub');
 
-            if(topUpCount > 0) {
-                badgeTopUp.innerText = topUpCount;
-                badgeTopUp.classList.add('show');
-            } else { badgeTopUp.classList.remove('show'); }
+            if(badgeTopUp) {
+                if(topUpCount > 0) {
+                    badgeTopUp.innerText = topUpCount;
+                    badgeTopUp.classList.add('show');
+                } else { badgeTopUp.classList.remove('show'); }
+            }
 
-            if(subCount > 0) {
-                badgeSub.innerText = subCount;
-                badgeSub.classList.add('show');
-            } else { badgeSub.classList.remove('show'); }
+            if(badgeSub) {
+                if(subCount > 0) {
+                    badgeSub.innerText = subCount;
+                    badgeSub.classList.add('show');
+                } else { badgeSub.classList.remove('show'); }
+            }
         }
 
         function renderMetrics(metrics) {
             if(!metrics) return;
-            document.getElementById('metric-mitra-bulanan').innerText = metrics.mitraBulanan || 0;
-            document.getElementById('metric-mitra-komisi').innerText = metrics.mitraKomisi || 0;
-            document.getElementById('metric-total-topup').innerText = "Rp " + formatNumber(metrics.totalTopUp || 0);
-            document.getElementById('metric-total-sub').innerText = "Rp " + formatNumber(metrics.totalSubscription || 0);
+            const elMB = document.getElementById('metric-mitra-bulanan');
+            const elMK = document.getElementById('metric-mitra-komisi');
+            const elTT = document.getElementById('metric-total-topup');
+            const elTS = document.getElementById('metric-total-sub');
+
+            if(elMB) elMB.innerText = metrics.mitraBulanan || 0;
+            if(elMK) elMK.innerText = metrics.mitraKomisi || 0;
+            if(elTT) elTT.innerText = "Rp " + formatNumber(metrics.totalTopUp || 0);
+            if(elTS) elTS.innerText = "Rp " + formatNumber(metrics.totalSubscription || 0);
         }
 
         function renderCharts(chartData) {
-            const ctx = document.getElementById('bookingTrendChart').getContext('2d');
+            const chartCanvas = document.getElementById('bookingTrendChart');
+            if(!chartCanvas) return;
+            const ctx = chartCanvas.getContext('2d');
             let labels = chartData ? chartData.labels : ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
             let datasets = chartData ? chartData.values : [12, 19, 25, 15, 30, 45, 55];
             
@@ -1641,29 +1723,26 @@
                 data: {
                     labels: labels,
                     datasets: [{
-                    
                         label: 'Transaksi Sukses', data: datasets,
                         borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.1)',
                         borderWidth: 3, fill: true, tension: 0.4, pointBackgroundColor: '#0369a1'
                     }]
-           
                 },
                 options: {
                     responsive: true, maintainAspectRatio: false,
                     plugins: { legend: { display: false } },
                     scales: {
-       
                         y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
                         x: { grid: { display: false } }
                     }
                 }
-       
             });
         }
 
         // Render Mitra List Cards (dengan staggered animation)
         function renderMitraList() {
             const container = document.getElementById('container-mitra-list');
+            if(!container) return;
             container.innerHTML = "";
             
             if(!globalMitraList || globalMitraList.length === 0) {
@@ -1673,7 +1752,10 @@
 
             globalMitraList.forEach((mitra, index) => {
                 let logoSrc = mitra.logo || 'https://via.placeholder.com/150?text=Logo';
-                let isLangganan = mitra.skema.toLowerCase().includes('langganan');
+                
+                // Perbaikan: Pelindung untuk String Mitra Skema
+                let skemaStr = mitra.skema ? String(mitra.skema).toLowerCase() : "langganan";
+                let isLangganan = skemaStr.includes('langganan');
                 let skemaBadge = isLangganan ? 'badge-warning' : 'badge-success';
                 
                 // Menambahkan delay animasi untuk staggered effect
@@ -1686,7 +1768,7 @@
                         </div>
                         <div class="mitra-card-content">
                             <h4>${mitra.namaPerusahaan}</h4>
-                            <span class="badge ${skemaBadge}">${mitra.skema.toUpperCase()}</span>
+                            <span class="badge ${skemaBadge}">${mitra.skema || "Langganan"}</span>
                         </div>
                     </div>
                 `;
@@ -1694,40 +1776,69 @@
             filterMitra();
         }
         
-        // Buka Modal Detail Mitra
+        // Buka Modal Detail Mitra (Diperbarui agar data Realtime Terbaca & Fallback Variable Lengkap)
         function openMitraDetail(index) {
             const mitra = globalMitraList[index];
             if(!mitra) return;
             
-            document.getElementById('dtl-mitra-logo').src = mitra.logo || 'https://via.placeholder.com/150?text=Logo';
-            document.getElementById('dtl-mitra-logo').onerror = function() { this.src = 'https://via.placeholder.com/150?text=Logo'; };
-            document.getElementById('dtl-mitra-nama').innerText = mitra.namaPerusahaan;
-            document.getElementById('dtl-mitra-skema').innerText = "Skema " + mitra.skema;
-            
-            // Detail Information Mapping
-            document.getElementById('dtl-mitra-akun').innerText = mitra.username;
-            document.getElementById('dtl-mitra-hp').innerText = mitra.noHp ? mitra.noHp.replace(/'/g, '') : '-';
-            document.getElementById('dtl-mitra-alamat').innerText = mitra.alamat || '-';
-            document.getElementById('dtl-mitra-armada').innerText = (mitra.totalArmada || 0) + " Unit";
-
-            let isLangganan = mitra.skema.toLowerCase().includes('langganan');
-            if (isLangganan) {
-                document.getElementById('dtl-label-saldo').innerHTML = '<i class="fa-solid fa-calendar-check"></i> Batas Langganan';
-                document.getElementById('dtl-mitra-saldo').innerText = mitra.batasLangganan ? formatTanggalIndo(mitra.batasLangganan) : "Belum ada";
-                document.getElementById('dtl-mitra-saldo').style.color = "var(--warning)";
-                document.getElementById('dtl-mitra-skema').className = "badge badge-warning";
-            } else {
-                document.getElementById('dtl-label-saldo').innerHTML = '<i class="fa-solid fa-wallet"></i> Saldo Dompet';
-                document.getElementById('dtl-mitra-saldo').innerText = "Rp " + formatNumber(mitra.saldo || 0);
-                document.getElementById('dtl-mitra-saldo').style.color = "var(--success)";
-                document.getElementById('dtl-mitra-skema').className = "badge badge-success";
+            const logoEl = document.getElementById('dtl-mitra-logo');
+            if (logoEl) {
+                logoEl.src = mitra.logo || 'https://via.placeholder.com/150?text=Logo';
+                logoEl.onerror = function() { this.src = 'https://via.placeholder.com/150?text=Logo'; };
             }
 
-            document.getElementById('mitraDetailModal').style.display = "flex";
+            const namaEl = document.getElementById('dtl-mitra-nama');
+            if (namaEl) namaEl.innerText = mitra.namaPerusahaan || "-";
+            
+            // Perbaikan: Pelindung untuk String Skema agar tidak error saat toLowerCase
+            let skemaAsli = mitra.skema || "Langganan";
+            let skemaStr = String(skemaAsli).toLowerCase();
+            const skemaEl = document.getElementById('dtl-mitra-skema');
+            if (skemaEl) skemaEl.innerText = "Skema " + skemaAsli;
+            
+            // Detail Information Mapping
+            const akunEl = document.getElementById('dtl-mitra-akun');
+            const hpEl = document.getElementById('dtl-mitra-hp');
+            const alamatEl = document.getElementById('dtl-mitra-alamat');
+            const armadaEl = document.getElementById('dtl-mitra-armada');
+
+            if(akunEl) akunEl.innerText = mitra.username || "-";
+            if(hpEl) hpEl.innerText = mitra.noHp ? mitra.noHp.replace(/'/g, '') : '-';
+            if(alamatEl) alamatEl.innerText = mitra.alamat || '-';
+            
+            // Tampilan Armada Diperbarui (Mendukung fallback properti totalArmada atau armada dari respons JSON)
+            let armadaCount = mitra.totalArmada !== undefined ? mitra.totalArmada : (mitra.armada || 0);
+            if(armadaEl) armadaEl.innerText = armadaCount + " Unit";
+
+            const labelSaldo = document.getElementById('dtl-label-saldo');
+            const mitraSaldo = document.getElementById('dtl-mitra-saldo');
+
+            let isLangganan = skemaStr.includes('langganan');
+            if (isLangganan) {
+                if (labelSaldo) labelSaldo.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Batas Langganan';
+                // Tampilan Batas Langganan Diperbarui (Mendukung properti batasLangganan atau expiredAt dari respons JSON)
+                let expDate = mitra.batasLangganan || mitra.expiredAt;
+                if (mitraSaldo) {
+                    mitraSaldo.innerText = expDate ? formatTanggalIndo(expDate) : "Belum ada / Berakhir";
+                    mitraSaldo.style.color = "var(--warning)";
+                }
+                if (skemaEl) skemaEl.className = "badge badge-warning";
+            } else {
+                if (labelSaldo) labelSaldo.innerHTML = '<i class="fa-solid fa-wallet"></i> Saldo Dompet';
+                if (mitraSaldo) {
+                    mitraSaldo.innerText = "Rp " + formatNumber(mitra.saldo || 0);
+                    mitraSaldo.style.color = "var(--success)";
+                }
+                if (skemaEl) skemaEl.className = "badge badge-success";
+            }
+
+            const modal = document.getElementById('mitraDetailModal');
+            if (modal) modal.style.display = "flex";
         }
 
         function closeMitraDetail() {
-            document.getElementById('mitraDetailModal').style.display = "none";
+            const modal = document.getElementById('mitraDetailModal');
+            if (modal) modal.style.display = "none";
         }
 
         function renderRequests(requests, history) {
@@ -1736,97 +1847,92 @@
             const containerHistTopUp = document.getElementById('container-hist-topup');
             const containerHistSub = document.getElementById('container-hist-sub');
             
-            containerTopUp.innerHTML = ""; containerSub.innerHTML = "";
-            containerHistTopUp.innerHTML = ""; containerHistSub.innerHTML = "";
+            if (containerTopUp) containerTopUp.innerHTML = ""; 
+            if (containerSub) containerSub.innerHTML = "";
+            if (containerHistTopUp) containerHistTopUp.innerHTML = ""; 
+            if (containerHistSub) containerHistSub.innerHTML = "";
 
-            if(requests && requests.topup && requests.topup.length > 0) {
-                requests.topup.forEach(item => {
-                    containerTopUp.innerHTML += `
-                        <div class="request-card">
-                      
-                            <div class="request-header">
-                                <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
-                                <span class="badge badge-pending">PENDING</span>
-                       
-                            </div>
-                            <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Nominal Top-Up:</span><strong style="color:var(--success);">Rp ${formatNumber(item.nominal)}</strong></div>
-                         
-                            </div>
-                            <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
-                            <div class="action-buttons">
-                                <button class="btn-action btn-reject" onclick="triggerAction('rejectTopUp', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                   
-                                <button class="btn-action btn-approve" onclick="triggerAction('approveTopUp', '${item.idRow || item.id}')"><i class="fa-solid fa-check"></i> Setujui</button>
-                            </div>
-                        </div>`;
-                });
-          
-            } else { containerTopUp.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Tidak ada antrean top-up.</div>`; }
+            if(containerTopUp) {
+                if(requests && requests.topup && requests.topup.length > 0) {
+                    requests.topup.forEach(item => {
+                        containerTopUp.innerHTML += `
+                            <div class="request-card">
+                                <div class="request-header">
+                                    <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
+                                    <span class="badge badge-pending">PENDING</span>
+                                </div>
+                                <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Nominal Top-Up:</span><strong style="color:var(--success);">Rp ${formatNumber(item.nominal)}</strong></div>
+                                </div>
+                                <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-reject" onclick="triggerAction('rejectTopUp', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                                    <button class="btn-action btn-approve" onclick="triggerAction('approveTopUp', '${item.idRow || item.id}')"><i class="fa-solid fa-check"></i> Setujui</button>
+                                </div>
+                            </div>`;
+                    });
+                } else { containerTopUp.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Tidak ada antrean top-up.</div>`; }
+            }
 
-            if(requests && requests.subscription && requests.subscription.length > 0) {
-                requests.subscription.forEach(item => {
-                    containerSub.innerHTML += `
-                        <div class="request-card">
-            
-                            <div class="request-header">
-                                <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
-                                <span class="badge badge-pending">PENDING</span>
-             
-                            </div>
-                            <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
-                                <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Total Bayar:</span><strong style="color:var(--primary-dark);">Rp ${formatNumber(item.totalBayar)}</strong></div>
-               
-                            </div>
-                            <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
-                            <div class="action-buttons">
-                                <button class="btn-action btn-reject" onclick="triggerAction('rejectSub', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
-                   
-                                <button class="btn-action btn-approve" onclick="triggerAction('approveSub', '${item.idRow || item.id}')"><i class="fa-solid fa-check"></i> Setujui</button>
-                            </div>
-                        </div>`;
-                });
-          
-            } else { containerSub.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Tidak ada antrean langganan.</div>`; }
+            if(containerSub) {
+                if(requests && requests.subscription && requests.subscription.length > 0) {
+                    requests.subscription.forEach(item => {
+                        containerSub.innerHTML += `
+                            <div class="request-card">
+                                <div class="request-header">
+                                    <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
+                                    <span class="badge badge-pending">PENDING</span>
+                                </div>
+                                <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
+                                    <div style="display:flex; justify-content:space-between; margin-bottom:4px;"><span>Total Bayar:</span><strong style="color:var(--primary-dark);">Rp ${formatNumber(item.totalBayar)}</strong></div>
+                                </div>
+                                <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
+                                <div class="action-buttons">
+                                    <button class="btn-action btn-reject" onclick="triggerAction('rejectSub', '${item.idRow || item.id}')"><i class="fa-solid fa-xmark"></i> Tolak</button>
+                                    <button class="btn-action btn-approve" onclick="triggerAction('approveSub', '${item.idRow || item.id}')"><i class="fa-solid fa-check"></i> Setujui</button>
+                                </div>
+                            </div>`;
+                    });
+                } else { containerSub.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Tidak ada antrean langganan.</div>`; }
+            }
 
-            if(history && history.topup && history.topup.length > 0) {
-                history.topup.forEach(item => {
-                    let bdg = item.status.toLowerCase() === "selesai" ? "badge-success" : "badge-danger";
-                    containerHistTopUp.innerHTML += `
-        
-                        <div class="request-card">
-                            <div class="request-header">
-                                <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
-                  
-                                <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
-                            </div>
-                            <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
-                        
-                                <div style="display:flex; justify-content:space-between;"><span>Nominal Top-Up:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.nominal)}</strong></div>
-                            </div>
-                            <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
-                        </div>`;
-                });
-            } else { containerHistTopUp.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum ada riwayat top-up.</div>`; }
+            if(containerHistTopUp) {
+                if(history && history.topup && history.topup.length > 0) {
+                    history.topup.forEach(item => {
+                        let bdg = item.status.toLowerCase() === "selesai" ? "badge-success" : "badge-danger";
+                        containerHistTopUp.innerHTML += `
+                            <div class="request-card">
+                                <div class="request-header">
+                                    <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
+                                    <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
+                                </div>
+                                <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
+                                    <div style="display:flex; justify-content:space-between;"><span>Nominal Top-Up:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.nominal)}</strong></div>
+                                </div>
+                                <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
+                            </div>`;
+                    });
+                } else { containerHistTopUp.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum ada riwayat top-up.</div>`; }
+            }
 
-            if(history && history.subscription && history.subscription.length > 0) {
-                history.subscription.forEach(item => {
-                    let bdg = item.status.toLowerCase() === "selesai" ? "badge-success" : "badge-danger";
-                    containerHistSub.innerHTML += `
-                        <div class="request-card">
-                            <div class="request-header">
-                                <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
-         
-                                <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
-                            </div>
-                            <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
-               
-                                <div style="display:flex; justify-content:space-between;"><span>Total Bayar:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.totalBayar)}</strong></div>
-                            </div>
-                            <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
-                        </div>`;
-                });
-            } else { containerHistSub.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum ada riwayat langganan.</div>`; }
+            if(containerHistSub) {
+                if(history && history.subscription && history.subscription.length > 0) {
+                    history.subscription.forEach(item => {
+                        let bdg = item.status.toLowerCase() === "selesai" ? "badge-success" : "badge-danger";
+                        containerHistSub.innerHTML += `
+                            <div class="request-card">
+                                <div class="request-header">
+                                    <div><h4 style="font-size:15px; font-weight:700;">${item.namaPerusahaan}</h4><span style="font-size:11px; color:var(--text-muted);">${formatTanggalIndo(item.tanggal)}</span></div>
+                                    <span class="badge ${bdg}">${item.status.toUpperCase()}</span>
+                                </div>
+                                <div style="background:rgba(0,0,0,0.03); padding:10px; border-radius:10px; font-size:13px;">
+                                    <div style="display:flex; justify-content:space-between;"><span>Total Bayar:</span><strong style="color:var(--text-main);">Rp ${formatNumber(item.totalBayar)}</strong></div>
+                                </div>
+                                <button style="background:none; border:none; text-align:left; font-size:12px; font-weight:700; color:var(--primary); cursor:pointer;" onclick="viewReceipt('${item.strukUrl}')"><i class="fa-solid fa-image"></i> Lihat Bukti Transfer</button>
+                            </div>`;
+                    });
+                } else { containerHistSub.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:var(--text-muted); font-size:13px; font-weight:600;"><i class="fa-regular fa-folder-open" style="font-size:30px; margin-bottom:10px; display:block;"></i>Belum ada riwayat langganan.</div>`; }
+            }
             
             filterRequests();
         }
@@ -1834,7 +1940,6 @@
         function triggerAction(actionType, rowId) {
             let label = actionType.includes("approve") ? "menyetujui" : "menolak";
             let type = actionType.includes("approve") ? "approve" : "reject";
-      
             let tx = actionType.includes("TopUp") ? "Top-Up Saldo" : "Langganan";
             
             showConfirmModal(type, `Apakah Anda yakin ingin ${label} pengajuan ${tx} ini?`, () => {
@@ -1849,34 +1954,61 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: actionType, idTarget: rowId })
                 }).then(r => r.json());
-                if(res.status === "success") { showToast("Sinkronisasi berhasil!"); fetchInitialDashboardData(); } 
-                else { showToast("Gagal: " + res.message, true); showLoader("", false); }
-            } catch (error) { showToast("Aksi disimulasikan sukses (Offline)."); fetchInitialDashboardData(); }
+                
+                showLoader("", false); // Hilangkan loading instan
+                
+                if(res.status === "success") { 
+                    showToast("Sinkronisasi berhasil!"); 
+                    fetchInitialDashboardData(); 
+                } 
+                else { 
+                    showToast("Gagal: " + res.message, true); 
+                }
+            } catch (error) { 
+                showLoader("", false); // Hilangkan loading instan
+                showToast("Aksi disimulasikan sukses (Offline)."); 
+                fetchInitialDashboardData(); 
+            }
         }
 
         function viewReceipt(url) {
             if(!url || url === 'undefined' || url === "") return showToast("Tidak ada file struk.", true);
-            document.getElementById('modalImgTarget').src = url;
-            document.getElementById('imageModal').style.display = "flex";
+            const target = document.getElementById('modalImgTarget');
+            const modal = document.getElementById('imageModal');
+            if (target) target.src = url;
+            if (modal) modal.style.display = "flex";
         }
-        function closeImageModal() { document.getElementById('imageModal').style.display = "none";
+        function closeImageModal() { 
+            const modal = document.getElementById('imageModal');
+            if (modal) modal.style.display = "none"; 
         }
 
         // SETTINGS MODAL MANAGEMENT
         function updateSettingsPreviews(settings) {
             if(!settings) return;
-            document.getElementById('preview-komisi').innerText = `Aktif: ${formatNumber(settings.komisi || 0)} %`;
-            document.getElementById('preview-trial').innerText = `Aktif: ${settings.trialDuration || 0} Hari`;
-            document.getElementById('preview-prefiks').innerText = `Aktif: ${settings.prefiksKode || '-'}`;
-            document.getElementById('preview-rekening').innerText = `${settings.rekeningList ? settings.rekeningList.length : 0} Rekening Terdaftar`;
-            document.getElementById('preview-kendaraan').innerText = `${settings.jenisKendaraanList ? settings.jenisKendaraanList.length : 0} Jenis Terdaftar`;
-            document.getElementById('preview-fasilitas').innerText = `${settings.fasilitasList ? settings.fasilitasList.length : 0} Fasilitas Terdaftar`;
-            document.getElementById('preview-paketakses').innerText = `${settings.paketAksesList ? settings.paketAksesList.length : 0} Paket Terdaftar`;
+            const pKomisi = document.getElementById('preview-komisi');
+            const pTrial = document.getElementById('preview-trial');
+            const pPrefiks = document.getElementById('preview-prefiks');
+            const pRekening = document.getElementById('preview-rekening');
+            const pKendaraan = document.getElementById('preview-kendaraan');
+            const pFasilitas = document.getElementById('preview-fasilitas');
+            const pPaket = document.getElementById('preview-paketakses');
+
+            if(pKomisi) pKomisi.innerText = `Aktif: ${formatNumber(settings.komisi || 0)} %`;
+            if(pTrial) pTrial.innerText = `Aktif: ${settings.trialDuration || 0} Hari`;
+            if(pPrefiks) pPrefiks.innerText = `Aktif: ${settings.prefiksKode || '-'}`;
+            if(pRekening) pRekening.innerText = `${settings.rekeningList ? settings.rekeningList.length : 0} Rekening Terdaftar`;
+            if(pKendaraan) pKendaraan.innerText = `${settings.jenisKendaraanList ? settings.jenisKendaraanList.length : 0} Jenis Terdaftar`;
+            if(pFasilitas) pFasilitas.innerText = `${settings.fasilitasList ? settings.fasilitasList.length : 0} Fasilitas Terdaftar`;
+            if(pPaket) pPaket.innerText = `${settings.paketAksesList ? settings.paketAksesList.length : 0} Paket Terdaftar`;
         }
 
         function openSettingModal(type) {
+            currentSettingType = type; // Melacak modal yang terbuka
             const titleEl = document.getElementById('settingModalTitle');
             const bodyEl = document.getElementById('settingModalBody');
+            if(!titleEl || !bodyEl) return;
+
             const st = globalRawData.settings || {};
             if(type === 'admin') {
                 const sessionStr = localStorage.getItem('goBorneoAdminSession') || "{}";
@@ -1886,19 +2018,16 @@
                     <label style="font-size:13px; font-weight:600;">Username (Tidak dapat diubah)</label>
                     <input type="text" id="edit-adm-user" class="form-control" value="${usr.username || ''}" disabled style="background:#e2e8f0; cursor:not-allowed;">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">Nama Lengkap</label>
-                   
                     <input type="text" id="edit-adm-nama" class="form-control" value="${usr.namaLengkap || ''}" placeholder="Nama Lengkap">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">Email</label>
                     <input type="email" id="edit-adm-email" class="form-control" value="${usr.email || ''}" placeholder="Email Admin">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">No Handphone</label>
-              
                     <input type="text" id="edit-adm-hp" class="form-control" value="${usr.noHp || ''}" placeholder="08xxxx">
                     <label style="font-size:13px; font-weight:600; margin-top:10px; display:block;">Password Baru (Kosongkan jika tidak ubah)</label>
                     <input type="password" id="edit-adm-pass" class="form-control" placeholder="Password Baru">
                     <button class="btn-save-settings" style="background:var(--success);" onclick="saveAdminAccount()"><i class="fa-solid fa-floppy-disk"></i> Simpan Perubahan Akun</button>
                 `;
             } else if(type === 'komisi') {
-       
                  titleEl.innerHTML = '<i class="fa-solid fa-coins" style="color:var(--warning);"></i> Potongan Komisi';
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Nominal Potongan per Transaksi (%)</label>
@@ -1907,7 +2036,6 @@
                 `;
             } else if(type === 'trial') {
                 titleEl.innerHTML = '<i class="fa-solid fa-hourglass-start" style="color:var(--primary);"></i> Masa Berlaku Trial';
-               
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Durasi Trial Pengguna Baru (Hari)</label>
                     <input type="number" id="mod-trial" class="form-control" value="${st.trialDuration || ''}" placeholder="Contoh: 7">
@@ -1915,7 +2043,6 @@
                 `;
             } else if(type === 'kodepesanan') {
                 titleEl.innerHTML = '<i class="fa-solid fa-barcode" style="color:#64748b;"></i> Prefiks Kode Booking';
-              
                 bodyEl.innerHTML = `
                     <label style="font-size:13px; font-weight:600;">Awalan Kode Booking / Invoice</label>
                     <input type="text" id="mod-prefiks" class="form-control" value="${st.prefiksKode || ''}" placeholder="Contoh: GB-">
@@ -1923,23 +2050,19 @@
                 `;
             } else if(type === 'rekening') {
                 titleEl.innerHTML = '<i class="fa-solid fa-building-columns" style="color:var(--success);"></i> Kelola Sheet Rekening';
-               
                 let listHtml = '';
                 if(st.rekeningList && st.rekeningList.length > 0) {
                     st.rekeningList.forEach((rek, idx) => {
                         let logoSrc = rek.logo || rek.icon || 'https://via.placeholder.com/80?text=Bank';
-                     
                         listHtml += `
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
-                                 
                                     <img src="${logoSrc}" class="setting-item-img" alt="Logo" onerror="this.src='https://via.placeholder.com/80?text=Bank'">
                                     <div>
                                         <strong style="display:block; font-size:14px;">${rek.bank} - ${rek.norek}</strong>
                                         <span style="font-size:11px; color:var(--text-muted);">${rek.atasNama}</span>
                                     </div>
                                 </div>
-                                
                                 <button class="btn-delete-item" onclick="deleteSettingItem('rekening', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
                     });
@@ -1957,7 +2080,6 @@
                 `;
             } else if(type === 'kendaraan') {
                 titleEl.innerHTML = '<i class="fa-solid fa-car" style="color:#a855f7;"></i> Kelola Sheet Jenis Kendaraan';
-      
                 let listHtml = '';
                 if(st.jenisKendaraanList && st.jenisKendaraanList.length > 0) {
                     st.jenisKendaraanList.forEach((jns, idx) => {
@@ -1965,22 +2087,18 @@
                         listHtml += `
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
-                               
                                      <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Car'">
                                     <span style="font-size:14px; font-weight:700;">${jns.nama}</span>
                                 </div>
-                     
                                 <button class="btn-delete-item" onclick="deleteSettingItem('kendaraan', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
                     });
-                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data jenis kendaraan.</p>';
-                }
+                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data jenis kendaraan.</p>'; }
 
                 bodyEl.innerHTML = `
                     <div style="max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;">${listHtml}</div>
                     <hr style="border:none; border-top:1px dashed #cbd5e1; margin-bottom:15px;">
                     <h5 style="font-size:14px; margin-bottom:5px;">Tambah Jenis Kendaraan</h5>
-         
                     <input type="text" id="add-jns-nama" class="form-control" placeholder="Nama Jenis Kendaraan (Ex: Toyota Hiace)">
                     <input type="text" id="add-jns-icon" class="form-control" placeholder="URL Icon Gambar (Tersimpan di Kolom B)">
                     <button class="btn-save-settings" onclick="addSettingItem('kendaraan')" style="background:#a855f7;"><i class="fa-solid fa-plus"></i> Tambah Kendaraan</button>
@@ -1992,24 +2110,20 @@
                     st.fasilitasList.forEach((fas, idx) => {
                         let iconSrc = fas.icon || fas.logo || fas.gambar || 'https://via.placeholder.com/80?text=Star';
                         listHtml += `
-         
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
                                     <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Star'">
-       
                                      <span style="font-size:14px; font-weight:700;">${fas.nama}</span>
                                 </div>
                                 <button class="btn-delete-item" onclick="deleteSettingItem('fasilitas', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
                     });
-                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data fasilitas.</p>';
-                }
+                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data fasilitas.</p>'; }
 
                 bodyEl.innerHTML = `
                     <div style="max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;">${listHtml}</div>
                     <hr style="border:none; border-top:1px dashed #cbd5e1; margin-bottom:15px;">
                     <h5 style="font-size:14px; margin-bottom:5px;">Tambah Fasilitas Baru</h5>
-         
                     <input type="text" id="add-fas-nama" class="form-control" placeholder="Nama Fasilitas (Ex: AC, Reclining Seat)">
                     <input type="text" id="add-fas-icon" class="form-control" placeholder="URL Icon Gambar (Tersimpan di Kolom B)">
                     <button class="btn-save-settings" onclick="addSettingItem('fasilitas')" style="background:#ec4899;"><i class="fa-solid fa-plus"></i> Tambah Fasilitas</button>
@@ -2021,48 +2135,46 @@
                     st.paketAksesList.forEach((pkt, idx) => {
                         listHtml += `
                             <div class="setting-list-item">
-             
                                 <div class="setting-item-content">
                                     <div style="background:rgba(249,115,22,0.1); color:#f97316; width:40px; height:40px; border-radius:10px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
-                                   
                                         <i class="fa-solid fa-box" style="font-size: 18px;"></i>
                                     </div>
                                     <div>
-                   
                                         <strong style="display:block; font-size:14px;">${pkt.nama}</strong>
                                         <span style="font-size:11px; color:var(--text-muted);">Biaya: Rp ${formatNumber(pkt.harga)}</span>
-                                 
                                     </div>
                                 </div>
                                 <button class="btn-delete-item" onclick="deleteSettingItem('paketakses', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
-                            
                             </div>`;
                     });
-                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data paket akses.</p>';
-                }
+                } else { listHtml = '<p style="font-size:12px; color:var(--text-muted); margin-bottom:15px;">Belum ada data paket akses.</p>'; }
 
                 bodyEl.innerHTML = `
                     <div style="max-height:200px; overflow-y:auto; margin-bottom:15px; padding-right:5px;">${listHtml}</div>
                     <hr style="border:none; border-top:1px dashed #cbd5e1; margin-bottom:15px;">
                     <h5 style="font-size:14px; margin-bottom:5px;">Tambah Paket Akses Baru</h5>
-        
                     <input type="text" id="add-paket-nama" class="form-control" placeholder="Waktu / Nama Paket (Ex: 1 Bulan)">
                     <input type="number" id="add-paket-harga" class="form-control" placeholder="Biaya (Ex: 50000)">
                     <button class="btn-save-settings" onclick="addSettingItem('paketakses')" style="background:#f97316;"><i class="fa-solid fa-plus"></i> Tambah Paket</button>
                 `;
             }
 
-            document.getElementById('settingInputModal').style.display = "flex";
+            const modal = document.getElementById('settingInputModal');
+            if (modal) modal.style.display = "flex";
         }
-        function closeSettingModal() { document.getElementById('settingInputModal').style.display = "none";
+        
+        function closeSettingModal() { 
+            const modal = document.getElementById('settingInputModal');
+            if (modal) modal.style.display = "none";
+            currentSettingType = null;
         }
 
         async function saveAdminAccount() {
-            const usr = document.getElementById('edit-adm-user').value;
-            const nama = document.getElementById('edit-adm-nama').value;
-            const email = document.getElementById('edit-adm-email').value;
-            const hp = document.getElementById('edit-adm-hp').value;
-            const pass = document.getElementById('edit-adm-pass').value;
+            const usr = document.getElementById('edit-adm-user')?.value;
+            const nama = document.getElementById('edit-adm-nama')?.value;
+            const email = document.getElementById('edit-adm-email')?.value;
+            const hp = document.getElementById('edit-adm-hp')?.value;
+            const pass = document.getElementById('edit-adm-pass')?.value;
             if(!nama || !email) return showToast("Nama dan Email wajib diisi!", true);
 
             showLoader("Menyimpan Perubahan Akun...");
@@ -2071,12 +2183,13 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({
                         action: "updateAdminAccount",
-      
                         username: usr, namaLengkap: nama,
                         email: email, noHp: hp, password: pass
                     })
                 }).then(r => r.json());
-                showLoader("", false);
+                
+                showLoader("", false); // Hilangkan Loading Instan
+                
                 if(res.status === "success") {
                     showToast("Akun admin berhasil diperbarui!");
                     const oldSession = JSON.parse(localStorage.getItem('goBorneoAdminSession') || "{}");
@@ -2091,100 +2204,112 @@
                     showToast("Gagal: " + res.message, true);
                 }
             } catch(e) {
+                showLoader("", false); // Hilangkan Loading Instan
                 showToast("Simulasi update akun sukses (Offline).");
                 closeSettingModal();
-                showLoader("", false);
             }
         }
 
         async function saveSingleSetting(key) {
             showLoader("Menyimpan Pengaturan...");
             let payload = { action: "saveSystemSettings" };
-            if(key === 'komisi') payload.komisi = document.getElementById('mod-komisi').value;
-            if(key === 'trial') payload.trialDuration = document.getElementById('mod-trial').value;
-            if(key === 'prefiks') payload.prefiksKode = document.getElementById('mod-prefiks').value;
+            if(key === 'komisi') payload.komisi = document.getElementById('mod-komisi')?.value;
+            if(key === 'trial') payload.trialDuration = document.getElementById('mod-trial')?.value;
+            if(key === 'prefiks') payload.prefiksKode = document.getElementById('mod-prefiks')?.value;
 
             try {
                 let res = await fetch(GAS_API_URL, {
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify(payload)
                 }).then(r => r.json());
+                
+                showLoader("", false); // Hilangkan Loading Instan
+                
                 if(res.status === "success") {
                     showToast("Pengaturan berhasil disimpan!");
-                    closeSettingModal();
-                    fetchInitialDashboardData();
-                } else { showToast("Gagal: " + res.message, true); showLoader("", false);
+                    await fetchInitialDashboardData();
+                    if(currentSettingType) openSettingModal(currentSettingType); // Auto-refresh modal
+                } else { 
+                    showToast("Gagal: " + res.message, true); 
                 }
-            } catch (e) { showToast("Tersimpan secara lokal (Offline Mode).");
-                closeSettingModal(); showLoader("", false); }
+            } catch (e) { 
+                showLoader("", false); // Hilangkan Loading Instan
+                showToast("Tersimpan secara lokal (Offline Mode).");
+                if(currentSettingType) openSettingModal(currentSettingType); // Auto-refresh modal
+            }
         }
 
         async function addSettingItem(category) {
             let payload = { action: "addSettingList", category: category };
             if(category === 'rekening') {
-                payload.bank = document.getElementById('add-rek-bank').value;
-                payload.norek = document.getElementById('add-rek-norek').value;
-                payload.atasNama = document.getElementById('add-rek-an').value;
-                payload.logo = document.getElementById('add-rek-logo').value || "";
+                payload.bank = document.getElementById('add-rek-bank')?.value;
+                payload.norek = document.getElementById('add-rek-norek')?.value;
+                payload.atasNama = document.getElementById('add-rek-an')?.value;
+                payload.logo = document.getElementById('add-rek-logo')?.value || "";
                 if(!payload.bank || !payload.norek || !payload.atasNama) return showToast("Bank, No Rekening, dan Atas Nama wajib diisi!", true);
             } else if(category === 'kendaraan') {
-                payload.nama = document.getElementById('add-jns-nama').value;
-                payload.icon = document.getElementById('add-jns-icon').value || "";
-                payload.logo = payload.icon; 
-                if(!payload.nama) return showToast("Nama jenis kendaraan wajib diisi!", true);
+                payload.nama = document.getElementById('add-jns-nama')?.value;
+                payload.icon = document.getElementById('add-jns-icon')?.value || "";
+                if(!payload.nama) return showToast("Nama kendaraan wajib diisi!", true);
             } else if(category === 'fasilitas') {
-                payload.nama = document.getElementById('add-fas-nama').value;
-                payload.icon = document.getElementById('add-fas-icon').value || "";
-                payload.logo = payload.icon; 
+                payload.nama = document.getElementById('add-fas-nama')?.value;
+                payload.icon = document.getElementById('add-fas-icon')?.value || "";
                 if(!payload.nama) return showToast("Nama fasilitas wajib diisi!", true);
             } else if(category === 'paketakses') {
-                payload.nama = document.getElementById('add-paket-nama').value;
-                payload.harga = document.getElementById('add-paket-harga').value;
-                if(!payload.nama || !payload.harga) return showToast("Waktu paket dan biaya wajib diisi!", true);
+                payload.nama = document.getElementById('add-paket-nama')?.value;
+                payload.harga = document.getElementById('add-paket-harga')?.value;
+                if(!payload.nama || !payload.harga) return showToast("Nama dan Biaya paket wajib diisi!", true);
             }
 
-            showLoader("Menambahkan Data...");
+            showLoader("Menyimpan Data...");
             try {
                 let res = await fetch(GAS_API_URL, {
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify(payload)
                 }).then(r => r.json());
+                
+                showLoader("", false); // Hilangkan Loading Instan
+                
                 if(res.status === "success") {
                     showToast("Data berhasil ditambahkan!");
-                    closeSettingModal();
-                    fetchInitialDashboardData();
-                } else { showToast(res.message, true); showLoader("", false); }
-            } catch(e) { showToast("Ditambahkan dalam mode simulasi.");
-                closeSettingModal(); showLoader("", false); }
+                    await fetchInitialDashboardData();
+                    if(currentSettingType) openSettingModal(currentSettingType); // Auto-refresh modal
+                } else { 
+                    showToast("Gagal: " + res.message, true); 
+                }
+            } catch (e) { 
+                showLoader("", false); // Hilangkan Loading Instan
+                showToast("Tersimpan (Mode Offline).");
+                if(currentSettingType) openSettingModal(currentSettingType); // Auto-refresh modal
+            }
         }
 
-        /* --- SCRIPT AKHIR YANG DILENGKAPI --- */
-        async function deleteSettingItem(category, index) {
-            showConfirmModal('reject', "Apakah Anda yakin ingin menghapus item ini dari sheet pengaturan?", async () => {
+        function deleteSettingItem(category, index) {
+            showConfirmModal('reject', `Apakah Anda yakin ingin menghapus data ini?`, async () => {
                 showLoader("Menghapus Data...");
                 try {
-                 
                     let res = await fetch(GAS_API_URL, {
                         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                         body: JSON.stringify({ action: "deleteSettingList", category: category, index: index })
-                     }).then(r => r.json());
-       
-                        
+                    }).then(r => r.json());
+                    
+                    showLoader("", false); // Hilangkan Loading Instan
+                    
                     if(res.status === "success") {
                         showToast("Data berhasil dihapus!");
-                        closeSettingModal();
-                        fetchInitialDashboardData();
-                    } else {
-                        showToast("Gagal menghapus data: " + res.message, true);
-                        showLoader("", false);
+                        await fetchInitialDashboardData();
+                        if(currentSettingType) openSettingModal(currentSettingType); // Auto-refresh modal
+                    } else { 
+                        showToast("Gagal: " + res.message, true); 
                     }
-                } catch(e) {
-                    showToast("Penghapusan disimulasikan sukses (Offline).");
-                    closeSettingModal();
-                    showLoader("", false);
+                } catch (e) { 
+                    showLoader("", false); // Hilangkan Loading Instan
+                    showToast("Dihapus secara lokal (Mode Offline).");
+                    if(currentSettingType) openSettingModal(currentSettingType); // Auto-refresh modal
                 }
             });
         }
     </script>
+
 </body>
 </html>
