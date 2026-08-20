@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Go Borneo - Admin & Owner Dashboard</title>
+    <title>Tobaba Admin- Admin & Owner Dashboard</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,7 +26,7 @@
         <div class="auth-card" id="form-login">
             
             <div class="auth-header">
-                <h1><i class="fa-solid fa-user-shield"></i> Go Borneo</h1>
+                <h1><i class="fa-solid fa-user-shield"></i> Tobaba Admin</h1>
                 <p>Admin & Owner Panel Login</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:10px;">
@@ -92,7 +92,7 @@
             <div class="sidebar-logo">
                 <img id="sidebar-logo-img" src="" style="width: 28px; height: 28px; border-radius: 50%; display: none; object-fit: cover;">
                 <i class="fa-solid fa-chart-line-up" id="sidebar-logo-icon"></i>
-                <span id="sidebar-company-name">Go Borneo</span>
+                <span id="sidebar-company-name">Tobaba</span>
             </div>
             <div class="nav-item active" id="nav-dashboard" onclick="navigateTo('dashboard')">
                 <i class="fa-solid fa-chart-pie"></i>
@@ -130,7 +130,7 @@
                     <div class="mobile-brand" style="display: none; align-items: center; gap: 10px;">
                         <img id="mobile-header-logo-img" src="" style="width: 32px; height: 32px; border-radius: 50%; display: none; object-fit: cover;">
                         <i class="fa-solid fa-chart-line-up" id="mobile-header-logo-icon" style="color: var(--primary-dark); font-size: 20px;"></i>
-                        <h1 id="mobile-header-company-name" style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif; color: var(--primary-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Go Borneo</h1>
+                        <h1 id="mobile-header-company-name" style="font-size: 16px; margin: 0; font-family: 'Poppins', sans-serif; color: var(--primary-dark); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 150px;">Tobaba</h1>
                     </div>
                     <h1 class="desktop-title" style="font-size: 24px; color: var(--primary-dark); margin: 0;">Administrator Panel</h1>
                 </div>
@@ -567,7 +567,7 @@
 
         // ================= DYNAMIC BRANDING LOGIC =================
         function updateBranding(user) {
-            const compName = user.namaPerusahaan || "Go Borneo";
+            const compName = user.namaPerusahaan || "Tobaba";
             const logoUrl = user.logo || "";
             const adminName = user.namaLengkap || user.username;
 
