@@ -9,6 +9,68 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/glideaceh/adminbustobaba/style2.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        .chart-filter-btn {
+            background: transparent;
+            border: none;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #64748b;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .chart-filter-btn.active {
+            background: #fff;
+            color: var(--primary);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        /* Pesanan Card Styling Modern */
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .pesanan-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+            border: 1px solid rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            animation: slideInUp 0.4s ease forwards;
+            opacity: 0;
+        }
+        .pesanan-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+        }
+        .pesanan-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px dashed #e2e8f0;
+            padding-bottom: 10px;
+        }
+        .pesanan-body {
+            display: flex;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #475569;
+        }
+        .pesanan-info-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+    </style>
 </head>
 <body>
 
@@ -24,30 +86,25 @@
 
     <section id="view-auth">
         <div class="auth-card" id="form-login">
-            
             <div class="auth-header">
                 <h1><i class="fa-solid fa-user-shield"></i> Tobaba Admin</h1>
                 <p>Admin & Owner Panel Login</p>
             </div>
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="login-username" class="form-control" placeholder="Username Admin">
-           
                 <div class="password-wrapper">
                     <input type="password" id="login-password" class="form-control" placeholder="Password" style="margin-top:0;">
                     <i class="fa-solid fa-eye password-toggle" onclick="togglePasswordVisibility('login-password', this)"></i>
                 </div>
                 
-                <!-- TAMBAHAN: Tombol Lupa Password -->
                 <div style="text-align: right; margin-top: -5px; margin-bottom: 5px;">
                     <span style="font-size: 12px; font-weight: 600; color: var(--primary); cursor: pointer;" onclick="openForgotPassword()">Lupa Password?</span>
                 </div>
                 
                 <button class="btn-submit" onclick="processLogin()"><i class="fa-solid fa-right-to-bracket"></i> Masuk Dashboard</button>
-      
             </div>
             <div class="auth-switch">
-                Belum punya akses?
-                <span onclick="toggleAuth('register')">Daftar Baru</span>
+                Belum punya akses? <span onclick="toggleAuth('register')">Daftar Baru</span>
             </div>
         </div>
 
@@ -56,13 +113,11 @@
                 <h1>Registrasi Akses</h1>
                 <p>Daftar sebagai Administrator Baru</p>
             </div>
-     
             <div style="display:flex; flex-direction:column; gap:10px;">
                 <input type="text" id="reg-nama" class="form-control" placeholder="Nama Lengkap">
                 <input type="text" id="reg-username" class="form-control" placeholder="Username">
                 <input type="email" id="reg-email" class="form-control" placeholder="Alamat Email">
                 <input type="tel" id="reg-hp" class="form-control" placeholder="No. Handphone (Ex: 0812...)">
-     
                 <input type="text" id="reg-perusahaan" class="form-control" placeholder="Nama Perusahaan">
                 
                 <div style="text-align: left; margin-top: 5px;">
@@ -73,7 +128,6 @@
                 <div class="password-wrapper">
                     <input type="password" id="reg-password" class="form-control" placeholder="Password" style="margin-top:0;">
                     <i class="fa-solid fa-eye password-toggle" onclick="togglePasswordVisibility('reg-password', this)"></i>
-                
                 </div>
                 <small style="color:var(--text-muted); font-size:11px; margin-top:-5px; margin-bottom:5px;">
                     *Min 8 karakter, diawali huruf besar, kombinasi huruf & angka.
@@ -81,8 +135,7 @@
                 <button class="btn-submit" onclick="processRegister()"><i class="fa-solid fa-user-plus"></i> Buat Akun Admin</button>
             </div>
             <div class="auth-switch">
-       
-                Sudah punya akun? <span onclick="toggleAuth('login')">Kembali Login</span>
+                 Sudah punya akun? <span onclick="toggleAuth('login')">Kembali Login</span>
             </div>
         </div>
     </section>
@@ -96,7 +149,6 @@
             </div>
             <div class="nav-item active" id="nav-dashboard" onclick="navigateTo('dashboard')">
                 <i class="fa-solid fa-chart-pie"></i>
-          
                 <span>Dashboard</span>
             </div>
             <div class="nav-item" id="nav-orders" onclick="navigateTo('orders')">
@@ -104,22 +156,23 @@
                 <span>Permintaan</span>
             </div>
             
-         
+            <div class="nav-item" id="nav-pesanan" onclick="navigateTo('pesanan')">
+                <i class="fa-solid fa-ticket"></i>
+                <span>Pesanan</span>
+            </div>
+
             <div class="nav-item" id="nav-mitra" onclick="navigateTo('mitra')">
                 <i class="fa-solid fa-users"></i>
                 <span>Mitra</span>
             </div>
-
             <div class="nav-item" id="nav-settings" onclick="navigateTo('settings')">
                 <i class="fa-solid fa-gear"></i>
-               
                 <span>Pengaturan</span>
             </div>
             <div style="margin-top: auto;" class="nav-logout-desktop">
                  <div class="nav-item" onclick="triggerLogoutWarning()" style="color: var(--danger);">
                     <i class="fa-solid fa-power-off"></i>
                     <span>Keluar</span>
-         
                 </div>
             </div>
         </nav>
@@ -142,19 +195,23 @@
 
         <div class="main-container">
             <section id="view-dashboard" class="page-section active">
-               
                 <div class="metrics-grid" id="metricsCarouselGrid">
+                    <div class="glass-card metric-item" style="margin-bottom:0;">
+                        <div class="metric-icon" style="background: #ec4899;"><i class="fa-solid fa-ticket"></i></div>
+                        <div>
+                            <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL PESANAN</div>
+                            <h2 id="metric-total-pesanan" style="font-size:18px; font-weight:800;">0</h2>
+                        </div>
+                    </div>
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: var(--success);"><i class="fa-solid fa-wallet"></i></div>
                         <div>
-                     
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL TOP-UP (IDR)</div>
                             <h2 id="metric-total-topup" style="font-size:18px; font-weight:800;">Rp 0</h2>
                         </div>
                     </div>
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: #a855f7;"><i class="fa-solid fa-receipt"></i></div>
-   
                         <div>
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL LANGGANAN (IDR)</div>
                             <h2 id="metric-total-sub" style="font-size:18px; font-weight:800;">Rp 0</h2>
@@ -162,7 +219,6 @@
                     </div>
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: var(--primary);"><i class="fa-solid fa-handshake"></i></div>
-   
                         <div>
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL MITRA BULANAN</div>
                             <h2 id="metric-mitra-bulanan" style="font-size:18px; font-weight:800;">0</h2>
@@ -170,7 +226,6 @@
                     </div>
                     <div class="glass-card metric-item" style="margin-bottom:0;">
                         <div class="metric-icon" style="background: var(--warning);"><i class="fa-solid fa-percent"></i></div>
-    
                         <div>
                             <div style="font-size: 12px; color: var(--text-muted); font-weight:700;">TOTAL MITRA KOMISI</div>
                             <h2 id="metric-mitra-komisi" style="font-size:18px; font-weight:800;">0</h2>
@@ -180,12 +235,14 @@
 
                 <div class="glass-card">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 style="font-family:'Poppins', sans-serif; font-size:16px; margin:0;"><i class="fa-solid fa-chart-area"></i> Grafik Tren Pemesanan</h3>
-                        <select id="chartFilter" class="form-control" style="width: auto; padding: 6px 12px; margin-top: 0; font-size: 12px; border-radius: 8px; cursor: pointer;" onchange="onChartFilterChange()">
-                            <option value="hari">Harian</option>
-                            <option value="bulan">Bulanan</option>
-                            <option value="tahun">Tahunan</option>
-                        </select>
+                        <h3 style="font-family:'Poppins', sans-serif; font-size:16px; margin:0;">
+                            <i class="fa-solid fa-chart-line"></i> Statistik Pesanan Lunas
+                        </h3>
+                        <div style="display: flex; gap: 5px; background: #f1f5f9; padding: 4px; border-radius: 10px;">
+                            <button id="btn-chart-hari" class="chart-filter-btn active" onclick="updateChartFilter('hari')">Hari</button>
+                            <button id="btn-chart-bulan" class="chart-filter-btn" onclick="updateChartFilter('bulan')">Bulan</button>
+                            <button id="btn-chart-tahun" class="chart-filter-btn" onclick="updateChartFilter('tahun')">Tahun</button>
+                        </div>
                     </div>
                     <div style="position: relative; height: 280px; width: 100%;">
                         <canvas id="bookingTrendChart"></canvas>
@@ -194,7 +251,6 @@
             </section>
 
             <section id="view-orders" class="page-section">
-          
                 <div class="sticky-req-header">
                     <div class="request-tabs">
                         <button class="tab-btn active" onclick="switchRequestTab('topup', this)">
@@ -203,7 +259,6 @@
                             <span class="notif-badge" id="badge-topup">0</span>
                         </button>
                         <button class="tab-btn" onclick="switchRequestTab('sub', this)">
-    
                             <i class="fa-solid fa-credit-card"></i>
                             <span>Pembayaran Langganan</span>
                             <span class="notif-badge" id="badge-sub">0</span>
@@ -219,7 +274,6 @@
                     </div>
                     <div class="search-form">
                         <i class="fa-solid fa-magnifying-glass"></i>
-    
                         <input type="text" id="reqSearchInput" placeholder="Cari nama perusahaan atau nominal..." oninput="filterRequests()">
                     </div>
                 </div>
@@ -238,6 +292,20 @@
                 </div>
             </section>
 
+            <section id="view-pesanan" class="page-section">
+                <div class="glass-card" style="padding-bottom: 30px;">
+                    <h2 style="font-family:'Poppins', sans-serif; font-size:20px; margin-bottom:5px;"><i class="fa-solid fa-ticket"></i> Daftar Pesanan Tiket</h2>
+                    <p style="font-size:13px; color:var(--text-muted);">Berikut adalah daftar seluruh pesanan yang dilakukan pelanggan pada aplikasi.</p>
+                    
+                    <div class="search-form" style="margin-top: 20px;">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="pesananSearchInput" placeholder="Cari ID Booking, Nama Penumpang, atau Nama Perusahaan..." oninput="filterPesanan()">
+                    </div>
+
+                    <div id="container-pesanan-list" style="margin-top: 20px; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 15px;">
+                    </div>
+                </div>
+            </section>
             <section id="view-mitra" class="page-section">
                 <div class="glass-card" style="padding-bottom: 30px;">
                     <h2 style="font-family:'Poppins', sans-serif; font-size:20px; margin-bottom:5px;"><i class="fa-solid fa-users"></i> Daftar Mitra Terdaftar</h2>
@@ -337,7 +405,6 @@
     </div>
 
     <div id="imageModal" class="modal" onclick="closeImageModal()">
-       
         <div class="modal-content" style="max-width: 550px;" onclick="event.stopPropagation()">
             <button class="modal-close" onclick="closeImageModal()">&times;</button>
             <h3 style="margin-bottom: 15px; font-size:18px; font-family:'Poppins', sans-serif;"><i class="fa-solid fa-file-image"></i> Bukti Transfer</h3>
@@ -372,7 +439,6 @@
         </div>
     </div>
 
-    <!-- Modal Lupa Password (2-Step Verification) -->
     <div id="forgotPasswordModal" class="modal" style="z-index: 100015; display: none;">
         <div class="modal-content" style="max-width: 380px;">
             <button class="modal-close" onclick="closeForgotPassword()">&times;</button>
@@ -381,7 +447,6 @@
             </div>
             <h3 style="font-family:'Poppins', sans-serif; font-size: 20px; color: var(--text-main); text-align: center; margin-bottom: 10px;">Lupa Password?</h3>
             
-            <!-- STEP 1: Minta Kode OTP -->
             <div id="forgot-step-1">
                 <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 20px; line-height: 1.5;">
                     Masukkan email Admin yang terdaftar. Kode verifikasi akan dikirimkan ke email Anda.
@@ -392,7 +457,6 @@
                 </button>
             </div>
 
-            <!-- STEP 2: Verifikasi Kode & Password Baru -->
             <div id="forgot-step-2" style="display: none;">
                 <p style="font-size: 13px; color: var(--text-muted); text-align: center; margin-bottom: 15px; line-height: 1.5;">
                     Kode verifikasi telah dikirim. Masukkan kode dan buat password baru Anda.
@@ -433,7 +497,6 @@
                     <span class="mitra-detail-label"><i class="fa-solid fa-user"></i> Nama Pemilik Akun</span>
                     <span class="mitra-detail-value" id="dtl-mitra-akun"></span>
                 </div>
-            
                 <div class="mitra-detail-row">
                     <span class="mitra-detail-label"><i class="fa-solid fa-phone"></i> No. Handphone</span>
                     <span class="mitra-detail-value" id="dtl-mitra-hp"></span>
@@ -462,6 +525,7 @@
 
         let chartInstance = null;
         let globalRawData = {};
+        let cachedChartData = null; 
         
         let pollingInterval = null;
         let autoSlideInterval = null;
@@ -471,9 +535,10 @@
         let currentChartFilter = 'hari'; 
         
         let globalMitraList = []; 
+        let globalPesananList = []; // Array Penyimpanan Data Pesanan
         let currentSettingType = null; 
         
-        let resetEmailTemp = ""; // Menyimpan email sementara untuk step 2
+        let resetEmailTemp = ""; 
 
         window.addEventListener('DOMContentLoaded', () => {
             checkAutoLogin();
@@ -487,7 +552,7 @@
             }
         });
 
-        // ================= FUNGSI LUPA PASSWORD (UPDATED) =================
+        // ================= FUNGSI LUPA PASSWORD =================
         function openForgotPassword() {
             document.getElementById('forgot-step-1').style.display = 'block';
             document.getElementById('forgot-step-2').style.display = 'none';
@@ -503,7 +568,6 @@
             if (modal) modal.style.display = "none";
         }
 
-        // STEP 1: Request Kode OTP ke Backend
         async function submitRequestResetCode() {
             const email = document.getElementById('forgot-email-input')?.value.trim();
             if (!email) return showToast("Masukkan Email Anda!", true);
@@ -531,7 +595,6 @@
             }
         }
 
-        // STEP 2: Submit Kode OTP & Password Baru
         async function submitResetPassword() {
             const code = document.getElementById('forgot-otp-input')?.value.trim();
             const newPassword = document.getElementById('forgot-newpass-input')?.value.trim();
@@ -543,14 +606,8 @@
                 let res = await fetch(GAS_API_URL, {
                     method: "POST",
                     headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({
-                        action: "resetPassword",
-                        email: resetEmailTemp,
-                        code: code,
-                        newPassword: newPassword
-                    })
+                    body: JSON.stringify({ action: "resetPassword", email: resetEmailTemp, code: code, newPassword: newPassword })
                 }).then(r => r.json());
-
                 showLoader("", false);
                 if (res.status === "success") {
                     showToast(res.message);
@@ -618,7 +675,6 @@
             }
         }
 
-        // UI Helpers
         function toggleAuth(view) {
             const formLogin = document.getElementById('form-login');
             const formReg = document.getElementById('form-register');
@@ -631,11 +687,8 @@
             const loadingText = document.getElementById('loadingText');
             if (loadingText) loadingText.innerText = message;
             if (loader) {
-                if(isActive) { 
-                    loader.classList.add('active'); 
-                } else { 
-                    loader.classList.remove('active'); 
-                }
+                if(isActive) { loader.classList.add('active'); } 
+                else { loader.classList.remove('active'); }
             }
         }
 
@@ -646,7 +699,7 @@
             
             if (!toast || !icon || !toastMsg) return;
 
-            toast.style.zIndex = "999999"; 
+            toast.style.zIndex = "999999";
             toast.style.animation = 'none';
             toast.offsetHeight; 
             toast.style.animation = 'slideInRight 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards';
@@ -742,7 +795,6 @@
             const icon = document.getElementById('confirmIcon');
 
             if (confirmMsg) confirmMsg.innerText = msg;
-            
             if(type === 'approve') {
                 if (proceedBtn) {
                     proceedBtn.className = "btn-action btn-approve";
@@ -778,7 +830,6 @@
             const passEl = document.getElementById('login-password');
             const user = userEl ? userEl.value : '';
             const pass = passEl ? passEl.value : '';
-
             if(!user || !pass) return showToast("Username dan Password wajib diisi!", true);
 
             showLoader("Memeriksa Kredensial...");
@@ -787,7 +838,6 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: "login", username: user, password: pass })
                 }).then(r => r.json());
-                
                 showLoader("", false); 
                 
                 if(res.status === "success") {
@@ -799,7 +849,6 @@
                     if (dashWrapper) dashWrapper.style.display = 'block';
                     
                     updateBranding(res.user);
-                    
                     showLoader("Memuat Data Halaman...");
                     await fetchInitialDashboardData();
                     startRealtimePolling();
@@ -859,17 +908,16 @@
                         namaPerusahaan: perusahaan, logoBase64: base64Logo
                     })
                 }).then(r => r.json());
-                
                 showLoader("", false); 
                 
                 if(res.status === "success") {
                     showToast("Registrasi Admin Berhasil! Silakan Login.");
                     toggleAuth('login');
                 } else { 
-                    showToast(res.message, true); 
+                    showToast(res.message, true);
                 }
             } catch (e) { 
-                showLoader("", false); 
+                showLoader("", false);
                 showToast("Gagal mendaftar, periksa koneksi.", true);
             }
         }
@@ -909,6 +957,20 @@
             });
         }
         
+        // --- FILTER PESANAN BARU ---
+        function filterPesanan() {
+            const searchInput = document.getElementById('pesananSearchInput');
+            if(!searchInput) return;
+            const keyword = searchInput.value.toLowerCase();
+            const container = document.getElementById('container-pesanan-list');
+            if(!container) return;
+            const cards = container.querySelectorAll('.pesanan-card');
+            cards.forEach(card => {
+                const text = card.innerText.toLowerCase();
+                card.style.display = text.includes(keyword) ? "flex" : "none";
+            });
+        }
+
         function filterMitra() {
             const searchInput = document.getElementById('mitraSearchInput');
             if(!searchInput) return;
@@ -922,32 +984,16 @@
             });
         }
 
-        async function onChartFilterChange() {
-            const filterEl = document.getElementById('chartFilter');
-            if(filterEl) currentChartFilter = filterEl.value;
-            showLoader("Memperbarui Grafik...", true);
-            
-            try {
-                let response = await fetch(GAS_API_URL, {
-                    method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ action: "getAdminDashboardData", chartFilter: currentChartFilter })
-                });
-                let result = await response.json();
-                if(result.status === "success") {
-                    renderCharts(result.chartData);
-                }
-            } catch (error) {
-                let mockChartData = {};
-                if(currentChartFilter === 'hari') {
-                    mockChartData = { labels: ['03 Jul', '04 Jul', '05 Jul', '06 Jul', '07 Jul'], values: [8, 15, 22, 19, 35] };
-                } else if (currentChartFilter === 'bulan') {
-                    mockChartData = { labels: ['Minggu 1', 'Minggu 2', 'Minggu 3', 'Minggu 4'], values: [45, 60, 80, 55] };
-                } else if (currentChartFilter === 'tahun') {
-                    mockChartData = { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'], values: [120, 150, 180, 130, 200, 250, 220, 0, 0, 0, 0, 0] };
-                }
-                renderCharts(mockChartData);
-            } finally {
-                showLoader("", false);
+        // ================= INSTANT CHART FILTER LOGIC =================
+        function updateChartFilter(type) {
+            currentChartFilter = type;
+            document.getElementById('btn-chart-hari').classList.remove('active');
+            document.getElementById('btn-chart-bulan').classList.remove('active');
+            document.getElementById('btn-chart-tahun').classList.remove('active');
+            document.getElementById('btn-chart-' + type).classList.add('active');
+
+            if(cachedChartData) {
+                renderCharts(cachedChartData, type);
             }
         }
 
@@ -955,14 +1001,14 @@
             try {
                 let response = await fetch(GAS_API_URL, {
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-                    body: JSON.stringify({ action: "getAdminDashboardData", chartFilter: currentChartFilter })
+                    body: JSON.stringify({ action: "getAdminDashboardData" })
                 });
                 let result = await response.json();
                 if(result.status === "success") {
                     globalRawData = result;
                     updateNotificationBadges(result.requests);
                     renderMetrics(result.metrics);
-                    renderCharts(result.chartData);
+                    renderCharts(result.chartData, currentChartFilter);
                     renderRequests(result.requests, result.history);
                     updateSettingsPreviews(result.settings);
                     
@@ -970,9 +1016,19 @@
                         globalMitraList = result.mitraList;
                         renderMitraList();
                     }
+                    if (result.pesananList) {
+                        globalPesananList = result.pesananList;
+                        renderPesananList();
+                    }
                 }
             } catch (error) { 
                 console.error(error);
+                let mockChartData = {
+                    hari: { labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'], values: [5, 10, 15, 8, 20, 30, 25] },
+                    bulan: { labels: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'], values: [120, 150, 180, 130, 200, 250, 220, 180, 160, 210, 190, 240] },
+                    tahun: { labels: ['2023', '2024'], values: [1500, 2100] }
+                };
+                renderCharts(mockChartData, currentChartFilter);
             } finally { 
                 showLoader("", false);
             }
@@ -984,7 +1040,7 @@
                 try {
                     let response = await fetch(GAS_API_URL, {
                         method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
-                        body: JSON.stringify({ action: "getAdminDashboardData", chartFilter: currentChartFilter })
+                        body: JSON.stringify({ action: "getAdminDashboardData" })
                     });
                     let result = await response.json();
                     if(result.status === "success") {
@@ -997,13 +1053,17 @@
                         globalRawData = result;
                         updateNotificationBadges(result.requests);
                         renderMetrics(result.metrics);
-                        renderCharts(result.chartData); 
+                        renderCharts(result.chartData, currentChartFilter); 
                         renderRequests(result.requests, result.history);
                         updateSettingsPreviews(result.settings);
                         
                         if (result.mitraList) {
                             globalMitraList = result.mitraList;
                             renderMitraList();
+                        }
+                        if (result.pesananList) {
+                            globalPesananList = result.pesananList;
+                            renderPesananList();
                         }
                     }
                 } catch(e) {}
@@ -1040,29 +1100,39 @@
             const elMK = document.getElementById('metric-mitra-komisi');
             const elTT = document.getElementById('metric-total-topup');
             const elTS = document.getElementById('metric-total-sub');
+            const elTP = document.getElementById('metric-total-pesanan'); // TOTAL PESANAN DOM
 
             if(elMB) elMB.innerText = metrics.mitraBulanan || 0;
             if(elMK) elMK.innerText = metrics.mitraKomisi || 0;
             if(elTT) elTT.innerText = "Rp " + formatNumber(metrics.totalTopUp || 0);
             if(elTS) elTS.innerText = "Rp " + formatNumber(metrics.totalSubscription || 0);
+            if(elTP) elTP.innerText = formatNumber(metrics.totalPesanan || 0);
         }
 
-        function renderCharts(chartData) {
+        function renderCharts(chartDataObj, type = 'hari') {
             const chartCanvas = document.getElementById('bookingTrendChart');
             if(!chartCanvas) return;
+
+            if(chartDataObj) cachedChartData = chartDataObj;
+            if(!cachedChartData) return;
+
+            let activeData = cachedChartData[type] || { labels: [], values: [] };
             const ctx = chartCanvas.getContext('2d');
-            let labels = chartData ? chartData.labels : ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'];
-            let datasets = chartData ? chartData.values : [12, 19, 25, 15, 30, 45, 55];
-            
             if (chartInstance) chartInstance.destroy();
+            
             chartInstance = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: labels,
+                    labels: activeData.labels,
                     datasets: [{
-                        label: 'Transaksi Sukses', data: datasets,
-                        borderColor: '#0284c7', backgroundColor: 'rgba(2, 132, 199, 0.1)',
-                        borderWidth: 3, fill: true, tension: 0.4, pointBackgroundColor: '#0369a1'
+                        label: 'Transaksi Sukses', 
+                        data: activeData.values,
+                        borderColor: '#0284c7', 
+                        backgroundColor: 'rgba(2, 132, 199, 0.1)',
+                        borderWidth: 3, 
+                        fill: true, 
+                        tension: 0.4, 
+                        pointBackgroundColor: '#0369a1'
                     }]
                 },
                 options: {
@@ -1074,6 +1144,48 @@
                     }
                 }
             });
+        }
+        
+        // --- RENDER LIST PESANAN MODERN & ANIMASI ---
+        function renderPesananList() {
+            const container = document.getElementById('container-pesanan-list');
+            if(!container) return;
+            container.innerHTML = "";
+
+            if(!globalPesananList || globalPesananList.length === 0) {
+                container.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:50px 20px; color:var(--text-muted); font-size:14px; font-weight:600;"><i class="fa-solid fa-ticket-simple" style="font-size:36px; margin-bottom:12px; display:block;"></i>Belum ada data pesanan dari aplikasi.</div>`;
+                return;
+            }
+
+            globalPesananList.forEach((psn, index) => {
+                let statStr = String(psn.status).toLowerCase();
+                let bdg = statStr.includes("lunas") ? "badge-success" : (statStr.includes("batal") || statStr.includes("ditolak") ? "badge-danger" : "badge-warning");
+                let animDelay = (index * 0.06) + 's'; // Staggered Animation Delay
+
+                container.innerHTML += `
+                    <div class="pesanan-card" style="animation-delay: ${animDelay};">
+                        <div class="pesanan-header">
+                            <div>
+                                <strong style="font-size:14px; color:var(--primary-dark); font-family: 'Poppins', sans-serif;">${psn.idBooking}</strong>
+                                <div style="font-size:11px; color:var(--text-muted); margin-top:2px;">${formatTanggalIndo(psn.waktu)}</div>
+                            </div>
+                            <span class="badge ${bdg}">${psn.status.toUpperCase()}</span>
+                        </div>
+                        <div class="pesanan-body">
+                            <div style="flex:1;">
+                                <div style="font-weight:700; color:var(--text-main); font-size:14px; margin-bottom: 6px;">${psn.namaPenumpang}</div>
+                                <div class="pesanan-info-item"><i class="fa-solid fa-building" style="color:var(--primary); width:16px;"></i> <span>${psn.perusahaan}</span></div>
+                                <div class="pesanan-info-item"><i class="fa-solid fa-route" style="color:var(--success); width:16px;"></i> <span>${psn.asal} <i class="fa-solid fa-arrow-right" style="font-size:10px; margin:0 3px; color:#94a3b8;"></i> ${psn.tujuan}</span></div>
+                            </div>
+                            <div style="text-align:right; display:flex; flex-direction:column; justify-content:center; padding-left:10px;">
+                                <div style="font-size:11px; color:var(--text-muted); margin-bottom:2px;">Total Bayar</div>
+                                <strong style="color:var(--success); font-size:16px; font-family: 'Poppins', sans-serif;">Rp ${formatNumber(psn.harga)}</strong>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            filterPesanan();
         }
 
         function renderMitraList() {
@@ -1142,7 +1254,6 @@
 
             const labelSaldo = document.getElementById('dtl-label-saldo');
             const mitraSaldo = document.getElementById('dtl-mitra-saldo');
-
             let isLangganan = skemaStr.includes('langganan');
             if (isLangganan) {
                 if (labelSaldo) labelSaldo.innerHTML = '<i class="fa-solid fa-calendar-check"></i> Batas Langganan';
@@ -1176,11 +1287,10 @@
             const containerHistTopUp = document.getElementById('container-hist-topup');
             const containerHistSub = document.getElementById('container-hist-sub');
             
-            if (containerTopUp) containerTopUp.innerHTML = ""; 
+            if (containerTopUp) containerTopUp.innerHTML = "";
             if (containerSub) containerSub.innerHTML = "";
             if (containerHistTopUp) containerHistTopUp.innerHTML = ""; 
             if (containerHistSub) containerHistSub.innerHTML = "";
-
             if(containerTopUp) {
                 if(requests && requests.topup && requests.topup.length > 0) {
                     requests.topup.forEach(item => {
@@ -1283,18 +1393,17 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify({ action: actionType, idTarget: rowId })
                 }).then(r => r.json());
-                
                 showLoader("", false); 
                 
                 if(res.status === "success") { 
-                    showToast("Sinkronisasi berhasil!"); 
+                    showToast("Sinkronisasi berhasil!");
                     fetchInitialDashboardData(); 
                 } 
                 else { 
-                    showToast("Gagal: " + res.message, true); 
+                    showToast("Gagal: " + res.message, true);
                 }
             } catch (error) { 
-                showLoader("", false); 
+                showLoader("", false);
                 showToast("Aksi disimulasikan sukses (Offline)."); 
                 fetchInitialDashboardData(); 
             }
@@ -1332,7 +1441,7 @@
         }
 
         function openSettingModal(type) {
-            currentSettingType = type; 
+            currentSettingType = type;
             const titleEl = document.getElementById('settingModalTitle');
             const bodyEl = document.getElementById('settingModalBody');
             if(!titleEl || !bodyEl) return;
@@ -1441,7 +1550,7 @@
                             <div class="setting-list-item">
                                 <div class="setting-item-content">
                                     <img src="${iconSrc}" class="setting-item-img" alt="Icon" onerror="this.src='https://via.placeholder.com/80?text=Star'">
-                                     <span style="font-size:14px; font-weight:700;">${fas.nama}</span>
+                                    <span style="font-size:14px; font-weight:700;">${fas.nama}</span>
                                 </div>
                                 <button class="btn-delete-item" onclick="deleteSettingItem('fasilitas', ${idx})"><i class="fa-solid fa-trash-can"></i></button>
                             </div>`;
@@ -1515,7 +1624,6 @@
                         email: email, noHp: hp, password: pass
                     })
                 }).then(r => r.json());
-                
                 showLoader("", false); 
                 
                 if(res.status === "success") {
@@ -1532,7 +1640,7 @@
                     showToast("Gagal: " + res.message, true);
                 }
             } catch(e) {
-                showLoader("", false); 
+                showLoader("", false);
                 showToast("Simulasi update akun sukses (Offline).");
                 closeSettingModal();
             }
@@ -1550,7 +1658,6 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify(payload)
                 }).then(r => r.json());
-                
                 showLoader("", false); 
                 
                 if(res.status === "success") {
@@ -1558,10 +1665,10 @@
                     await fetchInitialDashboardData();
                     if(currentSettingType) openSettingModal(currentSettingType); 
                 } else { 
-                    showToast("Gagal: " + res.message, true); 
+                    showToast("Gagal: " + res.message, true);
                 }
             } catch (e) { 
-                showLoader("", false); 
+                showLoader("", false);
                 showToast("Tersimpan secara lokal (Offline Mode).");
                 if(currentSettingType) openSettingModal(currentSettingType); 
             }
@@ -1595,7 +1702,6 @@
                     method: "POST", headers: { "Content-Type": "text/plain;charset=utf-8" },
                     body: JSON.stringify(payload)
                 }).then(r => r.json());
-                
                 showLoader("", false); 
                 
                 if(res.status === "success") {
@@ -1603,10 +1709,10 @@
                     await fetchInitialDashboardData();
                     if(currentSettingType) openSettingModal(currentSettingType); 
                 } else { 
-                    showToast("Gagal: " + res.message, true); 
+                    showToast("Gagal: " + res.message, true);
                 }
             } catch (e) { 
-                showLoader("", false); 
+                showLoader("", false);
                 showToast("Tersimpan (Mode Offline).");
                 if(currentSettingType) openSettingModal(currentSettingType); 
             }
@@ -1631,13 +1737,12 @@
                         showToast("Gagal: " + res.message, true); 
                     }
                 } catch (e) { 
-                    showLoader("", false); 
+                    showLoader("", false);
                     showToast("Dihapus secara lokal (Mode Offline).");
                     if(currentSettingType) openSettingModal(currentSettingType); 
                 }
             });
         }
     </script>
-
 </body>
 </html>
